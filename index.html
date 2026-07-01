@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hookframe — AI Video Ads for Tech &amp; Gadget Brands</title>
+<meta name="description" content="Native-feeling UGC + cinematic + CGI. Made with AI, ready in days. Get one free.">
+<meta name="theme-color" content="#0B0B0E">
+<meta name="color-scheme" content="dark">
+
+<!-- Open Graph / Twitter — this link gets shared in DMs, so the preview must look great -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Video Ads for Tech &amp; Gadget Brands">
+<meta property="og:description" content="Native-feeling UGC + cinematic + CGI. Made with AI, ready in days. Get one free.">
+<meta property="og:image" content="og-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Hookframe, AI video ads for tech and gadget brands">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Video Ads for Tech &amp; Gadget Brands">
+<meta name="twitter:description" content="Native-feeling UGC + cinematic + CGI. Made with AI, ready in days. Get one free.">
+<meta name="twitter:image" content="og-preview.jpg">
+
+<!-- Hookframe logo favicon -->
+<link rel="icon" type="image/svg+xml" href="hookframe-logo.svg">
+
+<!-- Fonts: headings Space Grotesk, body Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+<!-- Flip the no-js flag the instant the parser hits this, before paint, no flash -->
+<script>document.documentElement.className="js";</script>
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#0B0B0E;
+  --surface:#15151A;
+  --surface-2:#1E1E25;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --text:#F4F4F6;
+  --dim:#9A9AA6;
+  --accent:#FF5C2B;
+  --accent-press:#E84A1C;
+  --accent-ink:#0B0B0E;
+  --violet:#7C5CFF;
+
+  --font-head:"Space Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+
+  --fs-h1:clamp(2.5rem,6.4vw,5rem);
+  --fs-h2:clamp(1.95rem,4vw,3.15rem);
+  --fs-h3:clamp(1.1rem,1.6vw,1.35rem);
+  --fs-lead:clamp(1.05rem,1.8vw,1.3rem);
+
+  --maxw:1180px;
+  --pad:clamp(1.15rem,5vw,2.5rem);
+  --sectiony:clamp(4.5rem,9vw,7.5rem);
+  --radius:18px;
+
+  --ease-out:cubic-bezier(.22,.61,.27,1);
+  --ease-in-out:cubic-bezier(.65,.05,.36,1);
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  background:transparent;          /* lets the fixed 3D scene show through */
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:1rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:600;line-height:1.05;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%;height:auto}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad);position:relative}
+.section{padding-block:var(--sectiony);position:relative}
+.band{background:var(--surface);border-block:1px solid var(--line)}
+
+.skip{position:fixed;top:-60px;left:12px;z-index:300;background:var(--accent);color:var(--accent-ink);
+  padding:.7rem 1.1rem;border-radius:10px;font-weight:600;transition:top .2s var(--ease-out)}
+.skip:focus{top:12px}
+
+/* ============================================================
+   FULL-PAGE 3D SCENE (behind everything) + contrast overlay
+   ============================================================ */
+.scene{position:fixed;inset:0;z-index:-2;overflow:hidden;
+  /* static aurora — visible instantly, and the reduced-motion / WebGL-fail backdrop */
+  background:
+    radial-gradient(58% 48% at 16% 10%,rgba(255,92,43,.20),transparent 60%),
+    radial-gradient(55% 50% at 86% 6%,rgba(124,92,255,.24),transparent 60%),
+    radial-gradient(75% 60% at 50% 116%,rgba(124,92,255,.12),transparent 60%)}
+.scene canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene__overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,11,14,.46),rgba(11,11,14,.52) 45%,rgba(11,11,14,.72))}
+
+/* film-grain overlay */
+.grain{position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;
+  background:linear-gradient(90deg,var(--accent),var(--violet));transition:width .1s linear}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{position:sticky;top:0;z-index:100;
+  background:color-mix(in srgb,var(--bg) 70%,transparent);
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--line)}
+.nav__in{display:flex;align-items:center;justify-content:space-between;height:64px;
+  max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
+.brand{font-family:var(--font-head);font-weight:700;font-size:1.18rem;letter-spacing:-.02em;display:inline-flex;align-items:center}
+.brand__logo{height:28px;width:28px;margin-right:9px;display:block}
+.brand .dot{color:var(--accent);margin-left:1px}
+.nav__links{display:flex;align-items:center;gap:clamp(1rem,2.5vw,2rem)}
+.nav__link{position:relative;color:var(--dim);font-size:.94rem;font-weight:500;padding:.4rem 0;transition:color .2s var(--ease-out)}
+.nav__link::after{content:"";position:absolute;left:0;bottom:-2px;height:1.5px;width:100%;
+  background:var(--text);transform:scaleX(0);transform-origin:right;transition:transform .3s var(--ease-out)}
+.nav__link:hover{color:var(--text)}
+.nav__link:hover::after{transform:scaleX(1);transform-origin:left}
+.nav__hideable{display:none}
+@media(min-width:600px){.nav__hideable{display:inline-flex}}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{display:inline-flex;align-items:center;gap:.5ch;font-weight:600;font-family:var(--font-body);
+  border-radius:999px;cursor:pointer;border:1px solid transparent;line-height:1;
+  transition:transform .25s var(--ease-out),background .2s var(--ease-out),box-shadow .25s var(--ease-out),color .2s var(--ease-out);
+  will-change:transform}
+.btn--primary{background:var(--accent);color:var(--accent-ink);padding:.85rem 1.35rem;font-size:.98rem;
+  box-shadow:0 8px 30px -10px rgba(255,92,43,.6)}
+.btn--primary:hover{background:var(--accent-press);box-shadow:0 12px 38px -8px rgba(255,92,43,.75)}
+.btn--primary:active{transform:scale(.97)}
+.btn--sm{padding:.6rem 1.05rem;font-size:.9rem;box-shadow:0 6px 22px -10px rgba(255,92,43,.6)}
+.btn--lg{padding:1rem 1.8rem;font-size:1.05rem}
+.btn--ghost{background:rgba(255,255,255,.02);color:var(--text);border-color:var(--line-2);padding:.85rem 1.35rem;font-size:.98rem}
+.btn--ghost:hover{border-color:var(--text);background:rgba(255,255,255,.05)}
+.btn__mag{display:inline-flex;align-items:center;gap:.5ch;transition:transform .25s var(--ease-out)}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;padding-top:clamp(2.6rem,6vw,4.2rem);padding-bottom:clamp(2.6rem,6vw,4.2rem);overflow:hidden}
+.hero__spot{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
+.hero__spot::before,.hero__spot::after{content:"";position:absolute;border-radius:50%;filter:blur(80px)}
+.hero__spot::before{width:48vw;height:48vw;max-width:640px;max-height:640px;left:-8vw;top:2vh;
+  background:radial-gradient(circle,rgba(255,92,43,.30),transparent 65%)}
+.hero__spot::after{width:42vw;height:42vw;max-width:540px;max-height:540px;right:-6vw;top:18vh;
+  background:radial-gradient(circle,rgba(124,92,255,.28),transparent 65%)}
+.hero__in{position:relative;z-index:1;max-width:980px}
+
+.eyebrow{display:inline-flex;align-items:center;gap:.6ch;font-family:var(--font-head);font-weight:600;
+  font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+  border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:999px;padding:.5rem .9rem;margin-bottom:1.5rem}
+.eyebrow .tick{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.hero h1{font-size:var(--fs-h1);font-weight:700;max-width:17ch;margin-bottom:1.4rem}
+.hero h1 .accent{color:var(--accent)}
+.hero__sub{font-size:var(--fs-lead);color:var(--dim);max-width:56ch;line-height:1.5}
+.hero__sub strong{color:var(--text);font-weight:500}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:2.1rem}
+
+/* hero entrance — CSS only, never waits on a CDN lib (keeps LCP independent) */
+.js .hero [data-h]{opacity:1;transform:none}
+.js .hero .eyebrow[data-h]{animation-delay:.05s}
+.js .hero h1[data-h]{opacity:1;transform:none;clip-path:inset(0 0 102% 0);animation:clipUp .8s var(--ease-out) .12s forwards}
+.js .hero .hero__sub[data-h]{animation-delay:.34s}
+.js .hero .hero__cta[data-h]{animation-delay:.46s}
+.js .hero .trust[data-h]{animation-delay:.58s}
+@keyframes riseIn{to{opacity:1;transform:none}}
+@keyframes clipUp{to{clip-path:inset(0 0 -8% 0)}}
+
+/* ===== HERO 3D SCENE (phone in feed, sits on dark) ===== */
+.hero__grid{position:relative;z-index:1;display:grid;gap:clamp(1.5rem,4vw,2.5rem);align-items:center;grid-template-columns:1fr}
+@media(min-width:940px){.hero__grid{grid-template-columns:1.04fr .96fr}}
+.hero__text{text-align:center}
+@media(min-width:940px){.hero__text{text-align:left}}
+.hero__grid h1{margin-inline:auto}
+.hero__grid .hero__sub{margin-inline:auto}
+.hero__grid .hero__cta{justify-content:center}
+@media(min-width:940px){
+  .hero__grid h1{margin-inline:0}
+  .hero__grid .hero__sub{margin-inline:0}
+  .hero__grid .hero__cta{justify-content:flex-start}
+}
+.stage{position:relative;height:clamp(380px,44vw,540px);transform:translateY(var(--sy,0px));perspective:1500px;perspective-origin:55% 42%}
+.scene3d{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg));transition:transform .25s var(--ease-out)}
+.float{position:absolute;left:50%;top:50%;transform-style:preserve-3d}
+.float__in{transform-style:preserve-3d;animation:bob 6s ease-in-out infinite}
+.f2 .float__in{animation-duration:7.5s;animation-delay:-1.5s}
+.f3 .float__in{animation-duration:8.5s;animation-delay:-3s}
+@keyframes bob{0%,100%{transform:translateY(-8px)}50%{transform:translateY(8px)}}
+.phone{width:clamp(150px,17vw,210px);aspect-ratio:9/16;border-radius:30px;background:#0f0f14;border:1px solid var(--line-2);box-shadow:0 50px 90px -34px rgba(0,0,0,.85),0 0 60px -18px rgba(124,92,255,.5);padding:7px;position:relative}
+.phone__screen{position:relative;height:100%;border-radius:24px;overflow:hidden;background:linear-gradient(165deg,#FFE7DC 0%,#F3E5FF 55%,#E7EEFF 100%)}
+.phone__screen::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.6) 50%,transparent 65%);transform:translateX(-120%);animation:sweep 4.2s var(--ease-out) infinite}
+@keyframes sweep{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:34%;height:7px;border-radius:99px;background:rgba(0,0,0,.35);z-index:3}
+.phone__tag{position:absolute;top:14px;left:12px;z-index:3;font-family:var(--font-head);font-weight:600;font-size:.56rem;letter-spacing:.06em;text-transform:uppercase;color:#0E1014;background:rgba(255,255,255,.85);border-radius:99px;padding:.22rem .5rem;backdrop-filter:blur(4px)}
+.phone__play{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.92);box-shadow:0 8px 18px -6px rgba(0,0,0,.5);z-index:3}
+.phone__play svg{width:16px;height:16px;margin-left:2px;fill:#0E1014}
+.phone__bar{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;flex-direction:column;gap:6px}
+.phone__bar i{height:5px;border-radius:99px;background:rgba(0,0,0,.18);display:block}
+.phone__bar i.s{width:62%}.phone__bar i.m{width:84%}
+.phone__shop{align-self:flex-start;margin-top:3px;font-size:.56rem;font-weight:700;color:var(--accent-ink);background:var(--accent);border-radius:99px;padding:.3rem .6rem;letter-spacing:.02em}
+.mini{border-radius:18px;background:var(--surface-2);border:1px solid var(--line-2);box-shadow:0 36px 70px -34px rgba(0,0,0,.85);overflow:hidden;position:relative}
+.mini__screen{position:relative}
+.mini__screen::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.5) 50%,transparent 62%);transform:translateX(-120%);animation:sweep 5s var(--ease-out) infinite}
+.mini.cine{width:clamp(150px,16vw,200px)}.mini.cine .mini__screen{aspect-ratio:16/9;background:linear-gradient(150deg,#101317,#2A2F3A)}
+.mini.cgi{width:clamp(110px,11vw,140px)}.mini.cgi .mini__screen{aspect-ratio:1/1;background:linear-gradient(150deg,#FFE7DC,#E7EEFF)}
+.mini__tag{position:absolute;top:9px;left:9px;z-index:3;font-family:var(--font-head);font-weight:600;font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.5);border-radius:99px;padding:.2rem .45rem}
+.mini.cgi .mini__tag{color:#0E1014;background:rgba(255,255,255,.8)}
+.phone__screen .mock__video,.mini__screen .mock__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.chip{display:inline-flex;align-items:center;gap:.45ch;font-family:var(--font-head);font-weight:600;font-size:.7rem;color:var(--text);background:rgba(30,30,37,.92);border:1px solid var(--line-2);border-radius:99px;padding:.42rem .7rem;box-shadow:0 14px 30px -14px rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.chip svg{width:13px;height:13px;fill:var(--text)}
+.f-main{margin-left:-92px;margin-top:-150px;transform:translateZ(50px)}
+.f-cine{margin-left:-220px;margin-top:-200px;transform:translateZ(-110px)}
+.f-cgi{margin-left:70px;margin-top:30px;transform:translateZ(-70px)}
+.f-c1{margin-left:96px;margin-top:-150px;transform:translateZ(130px)}
+.f-c2{margin-left:-235px;margin-top:80px;transform:translateZ(95px)}
+.f-c3{margin-left:118px;margin-top:120px;transform:translateZ(40px)}
+.f-cine,.f-cgi{opacity:.97}
+@media(max-width:939px){.stage{height:clamp(300px,68vw,400px);margin-top:.4rem}}
+
+/* trust strip */
+.trust{margin-top:clamp(2.5rem,5vw,3.5rem);padding-top:1.6rem;border-top:1px solid var(--line)}
+.trust__label{font-family:var(--font-head);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:1.2rem}
+.stats{display:flex;flex-wrap:wrap;gap:clamp(1.5rem,5vw,3.4rem)}
+.stat{display:flex;flex-direction:column;gap:.3rem}
+.stat__fig{font-family:var(--font-head);font-weight:700;font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1;
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:flex;align-items:baseline}
+.stat__fig .qual{font-size:.42em;font-weight:600;color:var(--dim);margin-right:.4ch;letter-spacing:0}
+.stat__fig .suf{color:var(--accent)}
+.stat__cap{font-size:.95rem;color:var(--text)}
+.stat__src{font-size:.74rem;color:var(--dim)}
+
+/* ============================================================
+   SECTION HEADERS / KICKERS
+   ============================================================ */
+.block-head{max-width:62ch;margin-bottom:clamp(2rem,4vw,3rem)}
+.kicker{display:inline-flex;align-items:center;gap:.7ch;font-family:var(--font-head);font-weight:600;
+  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.kicker .bar{width:26px;height:2px;background:var(--accent);border-radius:2px}
+.block-head h2{font-size:var(--fs-h2);font-weight:600;margin-bottom:.85rem}
+.block-head .note{color:var(--dim);font-size:var(--fs-lead);max-width:52ch;line-height:1.5}
+
+/* ============================================================
+   WORK CARDS
+   ============================================================ */
+.grid{display:grid;gap:clamp(.9rem,2vw,1.4rem)}
+.grid--4{grid-template-columns:repeat(2,1fr)}
+.grid--2{grid-template-columns:1fr}
+@media(min-width:680px){.grid--2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.grid--4{grid-template-columns:repeat(4,1fr)}}
+.grid--3{grid-template-columns:1fr}
+@media(min-width:760px){.grid--3{grid-template-columns:repeat(3,1fr)}}
+
+.card{display:flex;flex-direction:column;gap:.85rem}
+.card__media{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
+  background:var(--surface-2);transform-style:preserve-3d;
+  transition:transform .35s var(--ease-out),border-color .35s var(--ease-out),box-shadow .35s var(--ease-out)}
+.card__media:hover{border-color:var(--line-2);box-shadow:0 26px 60px -28px rgba(0,0,0,.85)}
+.ratio-916{aspect-ratio:9/16}
+.ratio-45{aspect-ratio:4/5}
+.ratio-11{aspect-ratio:1/1}
+.card__media video,.card__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.card__video{cursor:pointer}
+.card__progress{position:absolute;left:0;right:0;bottom:0;z-index:5;height:16px;cursor:pointer;touch-action:none}
+.card__progress::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.22)}
+.card__progress-fill{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--accent);z-index:1}
+.card__progress:hover::after,.card__progress:hover .card__progress-fill{height:6px}
+
+
+.ad-copy{position:absolute;left:0;right:0;z-index:4;padding:1rem 1.05rem;pointer-events:none}
+.ad-copy--top{top:0;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent)}
+.ad-copy--bottom{bottom:0;background:linear-gradient(0deg,rgba(0,0,0,.66),transparent)}
+.ad-copy h4{font-family:var(--font-head);font-weight:700;font-size:clamp(1rem,2.5vw,1.45rem);line-height:1.04;letter-spacing:-.01em;text-transform:uppercase;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.55);max-width:15ch}
+.ad-copy .cta{display:inline-block;margin-top:.55rem;font-family:var(--font-head);font-weight:700;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:.34rem .7rem}
+
+.card__glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s var(--ease-out);
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(255,92,43,.22),transparent 60%);z-index:3}
+.card__media:hover .card__glow{opacity:1}
+
+.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(120% 90% at 50% 0%,rgba(124,92,255,.10),transparent 55%),linear-gradient(150deg,var(--surface-2),var(--surface) 70%)}
+.ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.07) 50%,transparent 62%);
+  transform:translateX(-100%);animation:shimmer 3.2s var(--ease-in-out) infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+.ph__index{position:absolute;top:.85rem;left:.95rem;font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--text);opacity:.55}
+.badge{position:absolute;top:.85rem;right:.85rem;font-family:var(--font-head);font-weight:600;font-size:.64rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text);background:rgba(11,11,14,.55);
+  border:1px solid var(--line-2);border-radius:999px;padding:.32rem .6rem;backdrop-filter:blur(6px)}
+.ph__play{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(11,11,14,.4);border:1px solid var(--line-2);backdrop-filter:blur(6px);
+  transition:transform .3s var(--ease-out),background .3s var(--ease-out)}
+.ph__play svg{width:18px;height:18px;margin-left:2px;fill:var(--text)}
+.card__media:hover .ph__play{transform:scale(1.08);background:var(--accent)}
+.card__media:hover .ph__play svg{fill:var(--accent-ink)}
+.card__label{font-size:.95rem;color:var(--dim);padding-inline:.15rem}
+.card__label strong{color:var(--text);font-weight:600}
+
+/* ============================================================
+   WHY (2x2) + HOW STEPS
+   ============================================================ */
+.tiles{display:grid;gap:clamp(.9rem,2vw,1.3rem);grid-template-columns:1fr}
+@media(min-width:640px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:color-mix(in srgb,var(--surface-2) 88%,transparent);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(1.4rem,2.6vw,1.95rem);transition:transform .3s var(--ease-out),border-color .3s var(--ease-out)}
+.tile:hover{transform:translateY(-4px);border-color:var(--line-2)}
+.tile h3{font-size:var(--fs-h3);margin-bottom:.55rem}
+.tile p{color:var(--dim);font-size:.98rem;line-height:1.55}
+.tile__viz{height:46px;margin-bottom:1.1rem;display:flex;align-items:flex-end;gap:5px;color:var(--accent)}
+.viz-shots i{width:20px;height:28px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line-2);animation:shotPulse 2.6s var(--ease-in-out) infinite}
+.viz-shots i:nth-child(2){animation-delay:.18s}.viz-shots i:nth-child(3){animation-delay:.36s}.viz-shots i:nth-child(4){animation-delay:.54s}
+.viz-shots i:nth-child(5){animation-delay:.72s;background:var(--accent);border-color:transparent}
+@keyframes shotPulse{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(-5px);opacity:1}}
+.viz-chart{width:100%;height:46px;overflow:visible}
+.viz-chart polyline{stroke:var(--accent);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:240;stroke-dashoffset:240;animation:chartDraw 2.8s var(--ease-out) infinite}
+.viz-chart circle{fill:var(--accent);opacity:0;animation:chartDot 2.8s var(--ease-out) infinite}
+@keyframes chartDraw{0%{stroke-dashoffset:240}45%,100%{stroke-dashoffset:0}}
+@keyframes chartDot{0%,42%{opacity:0}58%,100%{opacity:1}}
+.viz-cam{width:56px;height:46px}
+.viz-cam .strike{stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:80;stroke-dashoffset:80;animation:strikeIn 2.8s var(--ease-out) infinite}
+@keyframes strikeIn{0%,22%{stroke-dashoffset:80}55%,100%{stroke-dashoffset:0}}
+.viz-lang::after{content:"Olá";font-family:var(--font-head);font-weight:700;font-size:1.5rem;color:var(--accent);animation:langCycle 6s steps(1) infinite}
+@keyframes langCycle{0%{content:"Olá"}20%{content:"Hola"}40%{content:"Bonjour"}60%{content:"Ciao"}80%{content:"Hi"}}
+
+.steps{display:grid;gap:clamp(1rem,2.4vw,1.5rem);grid-template-columns:1fr}
+@media(min-width:760px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{position:relative;padding-top:1.6rem;border-top:1px solid var(--line)}
+.step__n{font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--accent-ink);background:var(--accent);
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;margin-bottom:1rem;font-variant-numeric:tabular-nums}
+.step h3{font-size:var(--fs-h3);margin-bottom:.5rem}
+.step p{color:var(--dim);font-size:.98rem;line-height:1.55;max-width:34ch}
+
+/* ============================================================
+   OFFER / CONTACT
+   ============================================================ */
+.offer{position:relative;border:1px solid var(--line-2);border-radius:calc(var(--radius) + 6px);
+  padding:clamp(2rem,6vw,4.5rem) clamp(1.4rem,5vw,3.5rem);overflow:hidden;text-align:center;isolation:isolate;background:var(--surface)}
+.offer::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(80% 120% at 18% 0%,rgba(255,92,43,.18),transparent 55%),
+    radial-gradient(80% 120% at 90% 100%,rgba(124,92,255,.22),transparent 55%),
+    linear-gradient(180deg,rgba(11,11,14,.60),rgba(11,11,14,.82))}
+.offer h2,.offer__body,.offer__risk,.offer__cta{position:relative;z-index:2}
+/* drifting reel of real creatives behind the offer */
+.offer__reel{position:absolute;inset:-8% -2%;z-index:0;display:flex;flex-direction:column;justify-content:center;gap:14px;
+  opacity:.20;filter:blur(2.5px) saturate(1.1);pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.offer__row{display:flex;gap:14px;width:max-content;will-change:transform;animation:reelL 70s linear infinite}
+.offer__row--r{animation:reelR 70s linear infinite}
+.offer__row img{height:clamp(86px,13vw,140px);width:auto;border-radius:12px;display:block}
+@keyframes reelL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes reelR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.offer h2{font-size:var(--fs-h2);margin-bottom:1rem;max-width:18ch;margin-inline:auto}
+.offer__body{font-size:var(--fs-lead);color:var(--dim);max-width:48ch;margin-inline:auto;line-height:1.5}
+.offer__risk{margin-top:1.1rem;font-size:1.02rem;color:var(--text);font-weight:500}
+.offer__scarcity{display:inline-flex;align-items:center;gap:.6ch;margin-top:1.6rem;color:var(--accent);font-weight:600;font-size:.95rem;
+  border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 10%,transparent);
+  border-radius:999px;padding:.5rem 1rem}
+.offer__scarcity .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 0 rgba(255,92,43,.6);animation:pulse 2.4s var(--ease-out) infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,92,43,.55)}70%{box-shadow:0 0 0 10px rgba(255,92,43,0)}100%{box-shadow:0 0 0 0 rgba(255,92,43,0)}}
+.offer__cta{margin-top:2.2rem}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{border-top:1px solid var(--line);padding-block:clamp(2.5rem,5vw,3.5rem);background:color-mix(in srgb,var(--bg) 80%,transparent)}
+.footer__in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1.5rem;align-items:flex-start}
+.footer__brand{font-family:var(--font-head);font-weight:700;font-size:1.3rem}
+.footer__brand .dot{color:var(--accent)}
+.footer__links{display:flex;flex-wrap:wrap;gap:1.4rem}
+.footer__links a{color:var(--dim);font-size:.95rem;transition:color .2s var(--ease-out)}
+.footer__links a:hover{color:var(--text)}
+.footer__fine{margin-top:2rem;display:flex;flex-direction:column;gap:.4rem}
+.footer__fine p{color:var(--dim);font-size:.84rem;max-width:70ch}
+.footer__fine .disc{opacity:.7}
+
+/* ============================================================
+   REVEAL (scroll-driven) — hidden only with JS+motion on,
+   so a failed lib or reduced-motion never strands content
+   ============================================================ */
+.js [data-reveal],.js [data-reveal-item]{opacity:1;transform:none}
+.no-anim [data-reveal],.no-anim [data-reveal-item]{opacity:1!important;transform:none!important}
+@media(prefers-reduced-motion:reduce){
+  .js [data-reveal],.js [data-reveal-item]{opacity:1!important;transform:none!important}
+  .js .hero [data-h]{opacity:1!important;transform:none!important;clip-path:none!important;animation:none!important}
+  .ph::after,.offer__scarcity .pulse,.phone__screen::after,.mini__screen::after,.float__in,.offer__row,.viz-shots i,.viz-chart polyline,.viz-chart circle,.viz-cam .strike,.viz-lang::after{animation:none!important}
+  .viz-chart polyline{stroke-dashoffset:0}.viz-chart circle{opacity:1}.viz-cam .strike{stroke-dashoffset:0}
+  .stage{transform:none!important}.scene3d{transform:none!important}
+}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#work">Skip to the work</a>
+
+<!-- full-page animated 3D scene + contrast overlay -->
+<div class="scene" id="scene" aria-hidden="true"></div>
+<div class="scene__overlay" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="#top" aria-label="Hookframe, home"><img class="brand__logo" src="hookframe-mark.svg" alt="" aria-hidden="true"><span class="brand__name">Hookframe</span><span class="dot">•</span></a>
+    <nav class="nav__links" aria-label="Primary">
+      <a class="nav__link nav__hideable" href="#work">Work</a>
+      <a class="nav__link nav__hideable" href="#how">How it works</a>
+      <a class="btn btn--primary btn--sm btn-magnetic" href="#contact"><span class="btn__mag">Get a free ad</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__spot" aria-hidden="true"></div>
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+      <span class="eyebrow" data-h><span class="tick" aria-hidden="true"></span>AI Video Ads · For tech &amp; gadget brands</span>
+      <h1 id="hero-title" data-h>Scroll-stopping video ads for your gadget, <span class="accent">made with AI</span> and ready in days.</h1>
+      <p class="hero__sub" data-h>Send me your product and I'll turn it into a stack of video ads you can test on Meta and TikTok: <strong>UGC, cinematic, CGI</strong>. The output of a creative team, for a fraction of the cost.</p>
+      <div class="hero__cta" data-h>
+        <a class="btn btn--primary btn-magnetic" href="#contact"><span class="btn__mag">Get a free sample ad →</span></a>
+        <a class="btn btn--ghost" href="#work">See the work</a>
+      </div>
+      </div>
+
+      <div class="stage" aria-hidden="true">
+        <div class="scene3d" id="scene3d">
+          <div class="float f-cine f2"><div class="float__in"><div class="mini cine"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_084401_844089b2-ce57-4fce-8264-9bb159fad783.mp4" type="video/mp4"></video><span class="mini__tag">Cinematic</span></div></div></div></div>
+          <div class="float f-cgi f3"><div class="float__in"><div class="mini cgi"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_075339_674da552-89e5-4f98-bf0f-875803d2372f.mp4" type="video/mp4"></video><span class="mini__tag">CGI</span></div></div></div></div>
+          <div class="float f-main"><div class="float__in">
+            <div class="phone">
+              <div class="phone__screen">
+                <video class="mock__video" autoplay muted loop playsinline preload="metadata">
+                  <source src="ugc-smartwatch.mp4" type="video/mp4">
+                </video>
+                <span class="notch"></span>
+                <span class="phone__tag">UGC</span>
+                <div class="phone__bar"><i class="m"></i><i class="s"></i><span class="phone__shop">Shop now</span></div>
+              </div>
+            </div>
+          </div></div>
+          <div class="float f-c1"><div class="float__in"><span class="chip"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Reel</span></div></div>
+          <div class="float f-c2 f2"><div class="float__in"><span class="chip"><span class="dot"></span>TikTok</span></div></div>
+          <div class="float f-c3 f3"><div class="float__in"><span class="chip"><span class="dot"></span>Meta</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap"><div class="trust" data-h>
+        <p class="trust__label">Why brands switch to AI UGC</p>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat__fig"><span class="qual">up to</span><span class="stat__num" data-to="10">10</span><span class="suf">×</span></span>
+            <span class="stat__cap">more conversions</span>
+            <span class="stat__src">Emplifi 2025</span>
+          </div>
+          <div class="stat">
+            <span class="stat__fig"><span class="stat__num" data-to="60">60</span>–<span class="stat__num" data-to="80">80</span><span class="suf">%</span></span>
+            <span class="stat__cap">cheaper to produce</span>
+            <span class="stat__src">industry rates</span>
+          </div>
+          <div class="stat">
+            <span class="stat__fig">Days</span>
+            <span class="stat__cap">not weeks</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ WORK ============================ -->
+  <section id="work" class="section">
+    <div class="wrap">
+      <div class="block-head" data-reveal>
+        <span class="kicker"><span class="bar"></span>01 — UGC Ads</span>
+        <h2>The format that actually converts</h2>
+        <p class="note">Ads that look like content, blend into the feed, and convert.</p>
+      </div>
+
+      <div class="grid grid--4" data-reveal-group>
+
+        <!-- ▼▼▼ HOW TO SWAP A PLACEHOLDER FOR A REAL CREATIVE ▼▼▼
+             VIDEO: delete the <div class="ph">…</div> below and drop this in its place
+             (keep the surrounding .card__media wrapper + .card__glow). IntersectionObserver
+             auto-plays it only while it is on screen:
+
+               <video class="card__video" controls poster="ugc-01-unboxing.jpg"
+                      autoplay muted loop playsinline preload="metadata"
+                      width="900" height="1600">
+                 <source src="ugc-01-unboxing.mp4" type="video/mp4">
+               </video>
+
+             IMAGE (block 03 static cards): replace the .ph with
+               <img src="static-07-powerbank.jpg" alt="Power bank static ad"
+                    width="900" height="1125" loading="lazy" decoding="async">
+
+             Naming map: ugc-01-unboxing · ugc-02-tutorial · ugc-03-review · ugc-04-problem-solution
+             range-05-cinematic · range-06-cgi · static-07-powerbank · static-08-lifestyle
+             static-09-packshot · static-10-cgistill
+             ▲▲▲ ------------------------------------------------------ ▲▲▲ -->
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" poster="ugc-earbuds.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="ugc-earbuds.mp4" type="video/mp4">
+            </video>
+            <span class="badge">UGC</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Unboxing</strong> / Wireless earbuds</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" poster="ugc-led.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="ugc-led.mp4" type="video/mp4">
+            </video>
+            <span class="badge">UGC</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Tutorial</strong> / Smart LED strip</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" poster="ugc-smartwatch.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="ugc-smartwatch.mp4" type="video/mp4">
+            </video>
+            <span class="badge">UGC</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Product review</strong> / Smartwatch</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" poster="ugc-velhinha.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="ugc-velhinha.mp4" type="video/mp4">
+            </video>
+            <span class="badge">UGC</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Testimonial</strong> / Language-learning app</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK 2 — Beyond UGC (surface band) -->
+  <section class="section band">
+    <div class="wrap">
+      <div class="block-head" data-reveal>
+        <span class="kicker"><span class="bar"></span>02 — Beyond UGC</span>
+        <h2>When you want range</h2>
+        <p class="note">When the feed needs more than a talking head.</p>
+      </div>
+
+      <div class="grid grid--3" data-reveal-group>
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" controls autoplay muted loop playsinline preload="auto">
+              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_075339_674da552-89e5-4f98-bf0f-875803d2372f.mp4" type="video/mp4">
+            </video>
+            <span class="badge">CGI</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>CGI showcase</strong> / Mechanical keyboard</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" controls autoplay muted loop playsinline preload="auto">
+              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_084401_844089b2-ce57-4fce-8264-9bb159fad783.mp4" type="video/mp4">
+            </video>
+            <span class="badge">CGI</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>CGI</strong> / Camera drone</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-916" data-tilt>
+            <video class="card__video" controls autoplay muted loop playsinline preload="auto">
+              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_061633_6ff13620-7b86-4597-9ce6-f54b6f2847a4.mp4" type="video/mp4">
+            </video>
+            <span class="badge">CGI</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>CGI</strong> / Power bank</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOCK 3 — Static Ads -->
+  <section class="section">
+    <div class="wrap">
+      <div class="block-head" data-reveal>
+        <span class="kicker"><span class="bar"></span>03 — Static Ads</span>
+        <h2>Scroll-stoppers for the feed</h2>
+        <p class="note">Sometimes one frame does all the selling.</p>
+      </div>
+
+      <div class="grid grid--3" data-reveal-group style="align-items:start">
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_193813_0e3c7fb2-77c8-4464-9559-1fd55cf5cf43.png" alt="VOLT power bank FOOH ad - power for a city" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>FOOH ad</strong> / Power bank</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222457_7592b9d2-d5d3-4931-9294-81c5cb3bdbdd.png" alt="PIXY instant camera UGC lifestyle ad" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>UGC lifestyle</strong> / Instant camera</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_221353_49e3ee83-8643-4da7-a779-213b5171a69f.png" alt="Mechanical keyboard gaming ad - dominate the game" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Feature highlight</strong> / Mechanical keyboard</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222500_452fce25-3c55-46e8-b99e-23d907e5acbc.png" alt="PULSE smartwatch CGI still ad" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>CGI still</strong> / Smartwatch</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_205411_33bdedb4-ad16-4c17-9963-c42dec621cd8.png" alt="AERO drone 3D-typography ad - ABOVE" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>3D type ad</strong> / Camera drone</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_231559_6f32726f-01d0-4b49-b40b-f88fdb664766.png" alt="GLYDE electric scooter social-proof ad" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Social proof ad</strong> / Electric scooter</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_211313_61030fed-6ce7-429a-bab0-cc0f1c49978d.png" alt="HUSH earbuds concept ad - silence the chaos" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Concept ad</strong> / Wireless earbuds</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_224136_68d850f8-c0ca-403b-963c-5f4a877153df.png" alt="Portable Bluetooth speaker studio packshot" loading="lazy" decoding="async">
+            <span class="badge">Packshot</span>
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Studio packshot</strong> / Portable speaker</p>
+        </article>
+
+        <article class="card" data-reveal-item>
+          <div class="card__media ratio-45" data-tilt>
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_230635_15cda2ae-1183-4a5b-b7a6-8128d47c0c0f.png" alt="LUMA LED strip before/after ad - upgrade your room" loading="lazy" decoding="async">
+            <div class="card__glow" aria-hidden="true"></div>
+          </div>
+          <p class="card__label"><strong>Before / after</strong> / LED light strip</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ WHY ============================ -->
+  <section class="section" aria-labelledby="why-title">
+    <div class="wrap">
+      <div class="block-head" data-reveal>
+        <span class="kicker"><span class="bar"></span>Why AI UGC</span>
+        <h2 id="why-title">A fraction of the cost, a fraction of the time.</h2>
+        <p class="note">Test more, win faster.</p>
+      </div>
+      <div class="tiles" data-reveal-group>
+        <div class="tile" data-reveal-item>
+          <span class="tile__viz viz-shots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          <h3>Ten shots, not one</h3>
+          <p>Ten ad ideas a day instead of one a week. You find the winner by testing more.</p>
+        </div>
+        <div class="tile" data-reveal-item>
+          <svg class="tile__viz viz-chart" viewBox="0 0 130 46" preserveAspectRatio="none" aria-hidden="true"><polyline points="2,40 32,30 60,34 88,16 124,5"/><circle cx="124" cy="5" r="4"/></svg>
+          <h3>Beat ad fatigue</h3>
+          <p>Fresh creative every week keeps your ads from going stale and your CPMs down.</p>
+        </div>
+        <div class="tile" data-reveal-item>
+          <svg class="tile__viz viz-cam" viewBox="0 0 60 46" aria-hidden="true"><rect x="6" y="14" width="34" height="24" rx="4" fill="none" stroke="var(--line-2)" stroke-width="2.5"/><path d="M40 22 L52 16 V36 L40 30 Z" fill="none" stroke="var(--line-2)" stroke-width="2.5" stroke-linejoin="round"/><line class="strike" x1="8" y1="40" x2="52" y2="12"/></svg>
+          <h3>No production circus</h3>
+          <p>No creators to book, no shoots, no reshoots.</p>
+        </div>
+        <div class="tile" data-reveal-item>
+          <span class="tile__viz viz-lang" aria-hidden="true"></span>
+          <h3>Any language, any avatar</h3>
+          <p>Relaunch the same ad in another language, or with a new face, in a day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MID-PAGE CTA ============================ -->
+  <section class="section" style="padding-block:clamp(1.4rem,4vw,2.8rem);text-align:center">
+    <div class="wrap">
+      <a class="btn btn--primary btn--lg btn-magnetic" href="#contact"><span class="btn__mag">Get a free ad →</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ HOW ============================ -->
+  <section id="how" class="section" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="block-head" data-reveal>
+        <span class="kicker"><span class="bar"></span>How it works</span>
+        <h2 id="how-title">From product to ads in 3 steps</h2>
+      </div>
+      <div class="steps" data-reveal-group>
+        <div class="step" data-reveal-item>
+          <div class="step__n">1</div><h3>Send your product</h3>
+          <p>A link and a few photos are enough.</p>
+        </div>
+        <div class="step" data-reveal-item>
+          <div class="step__n">2</div><h3>I make the ads</h3>
+          <p>A batch of UGC, cinematic or CGI in your niche.</p>
+        </div>
+        <div class="step" data-reveal-item>
+          <div class="step__n">3</div><h3>You test, I iterate</h3>
+          <p>We double down on the winners.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ OFFER / CONTACT ============================ -->
+  <section id="contact" class="section" aria-labelledby="offer-title">
+    <div class="wrap">
+      <div class="offer" data-reveal>
+        <div class="offer__reel" aria-hidden="true">
+          <div class="offer__row">
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_193813_0e3c7fb2-77c8-4464-9559-1fd55cf5cf43_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222457_7592b9d2-d5d3-4931-9294-81c5cb3bdbdd_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_221353_49e3ee83-8643-4da7-a779-213b5171a69f_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222500_452fce25-3c55-46e8-b99e-23d907e5acbc_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_205411_33bdedb4-ad16-4c17-9963-c42dec621cd8_min.webp" alt="">
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_193813_0e3c7fb2-77c8-4464-9559-1fd55cf5cf43_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222457_7592b9d2-d5d3-4931-9294-81c5cb3bdbdd_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_221353_49e3ee83-8643-4da7-a779-213b5171a69f_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_222500_452fce25-3c55-46e8-b99e-23d907e5acbc_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_205411_33bdedb4-ad16-4c17-9963-c42dec621cd8_min.webp" alt="">
+          </div>
+          <div class="offer__row offer__row--r">
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_231559_6f32726f-01d0-4b49-b40b-f88fdb664766_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_211313_61030fed-6ce7-429a-bab0-cc0f1c49978d_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_224136_68d850f8-c0ca-403b-963c-5f4a877153df_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_230635_15cda2ae-1183-4a5b-b7a6-8128d47c0c0f_min.webp" alt="">
+            <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_231559_6f32726f-01d0-4b49-b40b-f88fdb664766_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_211313_61030fed-6ce7-429a-bab0-cc0f1c49978d_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_224136_68d850f8-c0ca-403b-963c-5f4a877153df_min.webp" alt=""><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3FBYi3AI3ir9JVxwOnNp6OjVDlu/hf_20260625_230635_15cda2ae-1183-4a5b-b7a6-8128d47c0c0f_min.webp" alt="">
+          </div>
+        </div>
+        <h2 id="offer-title">Want to see it on your product?</h2>
+        <p class="offer__body">Book a quick call, tell me what you sell, and I'll make you one ad for free.</p>
+        <p class="offer__risk">If it doesn't stop the scroll, you pay nothing.</p>
+        <div class="offer__cta">
+          <a class="btn btn--primary btn--lg btn-magnetic" href="https://calendar.app.google/1csrhJEJ7b6KBB1F7" target="_blank" rel="noopener">
+            <span class="btn__mag">Book a call → get your free ad</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="wrap footer__in">
+    <div class="footer__brand">Hookframe<span class="dot">.</span></div>
+    <nav class="footer__links" aria-label="Footer">
+      <a href="mailto:hookframe.ads@gmail.com">Email</a>
+      <a href="https://wa.me/351928020561" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.instagram.com/hookframe.ads" target="_blank" rel="noopener">Instagram</a>
+      <a href="#work">Work</a>
+    </nav>
+  </div>
+  <div class="wrap footer__fine">
+    <p>© 2026 — Made with AI. Built for performance.</p>
+    <p class="disc">*Up to 10× — Emplifi Q3 2025 (UGC vs non-UGC posts). Industry figures (Stackla, Nielsen), not guaranteed results.</p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS — everything heavy is deferred to after load + idle.
+     Hero text + aurora backdrop never depend on the CDN libs.
+     ============================================================ -->
+<script>
+(function(){
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine    = window.matchMedia("(pointer: fine)").matches;
+  var idle    = window.requestIdleCallback || function(cb){return setTimeout(function(){cb()},200)};
+  var THREE_URL = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+
+  var sceneEl = document.getElementById("scene");
+  var stageEl = document.querySelector(".stage");
+  var scene3dEl = document.getElementById("scene3d");
+  var bgActive = false;     // true once a moving backdrop is running
+  var scrollNorm = 0;       // 0 at top → 1 once past ~1.2 viewports
+
+  /* ---------- scroll progress + scene fade (cheap, rAF-gated) ---------- */
+  var bar = document.getElementById("progress"), ticking = false;
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max>0 ? (h.scrollTop/max)*100 : 0) + "%";
+    if(stageEl && !reduced){ var soff = Math.max(0, Math.min(h.scrollTop, 700)); stageEl.style.setProperty("--sy", (-soff*0.05).toFixed(1)+"px"); }
+    scrollNorm = Math.min(h.scrollTop/(innerHeight*1.2), 1);
+    if(bgActive) sceneEl.style.opacity = (1 - scrollNorm*0.5).toFixed(3);  // ambient down-page
+    ticking = false;
+  }
+  addEventListener("scroll", function(){ if(!ticking){ ticking=true; requestAnimationFrame(onScroll);} }, {passive:true});
+  onScroll();
+
+  /* ---------- count-up on the hero stats (independent of GSAP) ---------- */
+  function countUp(el){
+    var to = +el.dataset.to, dur = 1100, t0 = performance.now();
+    (function tick(now){
+      var p = Math.min((now-t0)/dur,1), e = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(to*e);
+      if(p<1) requestAnimationFrame(tick); else el.textContent = to;
+    })(t0);
+  }
+  var trust = document.querySelector(".trust");
+  if(trust){
+    var co = new IntersectionObserver(function(ents){
+      ents.forEach(function(en){
+        if(en.isIntersecting){
+          if(!reduced) document.querySelectorAll(".stat__num").forEach(countUp);
+          co.disconnect();
+        }
+      });
+    }, {threshold:.45});
+    co.observe(trust);
+  }
+
+  /* ---------- lazy video playback (works once a real <video> is dropped in) ---------- */
+  var vids = document.querySelectorAll(".card__media video");
+  if(vids.length){
+    var vo = new IntersectionObserver(function(ents){
+      ents.forEach(function(en){
+        var v = en.target;
+        if(en.isIntersecting){ var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+        else v.pause();
+      });
+    }, {threshold:.25});
+    vids.forEach(function(v){ vo.observe(v); });
+  }
+
+  /* ---------- click a portfolio video to hear it (mutes the others) ---------- */
+  (function(){
+    var cvids = document.querySelectorAll(".card__video");
+    cvids.forEach(function(v){
+      v.muted = true;
+      var card = v.closest(".card__media");
+      if(!card) return;
+      var pbar = document.createElement("div"); pbar.className = "card__progress";
+      var pfill = document.createElement("span"); pfill.className = "card__progress-fill";
+      pbar.appendChild(pfill); card.appendChild(pbar);
+      v.addEventListener("timeupdate", function(){ if(v.duration) pfill.style.width = (v.currentTime / v.duration * 100) + "%"; });
+      var scrub = function(x){ var r = pbar.getBoundingClientRect(); var p = Math.max(0, Math.min(1, (x - r.left) / r.width)); if(v.duration) v.currentTime = p * v.duration; };
+      var dragging = false;
+      pbar.addEventListener("pointerdown", function(e){ e.stopPropagation(); e.preventDefault(); dragging = true; try{ pbar.setPointerCapture(e.pointerId); }catch(_){} scrub(e.clientX); });
+      pbar.addEventListener("pointermove", function(e){ if(dragging) scrub(e.clientX); });
+      pbar.addEventListener("pointerup", function(){ if(!dragging) return; dragging = false; var pp = v.play(); if(pp && pp.catch) pp.catch(function(){}); });
+      pbar.addEventListener("pointercancel", function(){ dragging = false; });
+      pbar.addEventListener("click", function(e){ e.stopPropagation(); });
+      card.addEventListener("click", function(){
+        var turnOn = v.muted;
+        cvids.forEach(function(o){ o.muted = true; var c = o.closest(".card__media"); if(c) c.classList.remove("is-live"); });
+        if(turnOn){ v.muted = false; var p = v.play(); if(p && p.catch) p.catch(function(){}); card.classList.add("is-live"); }
+      });
+    });
+  })();
+
+  /* ---------- magnetic buttons + tilt cards (pointer-fine, motion-on only) ---------- */
+  function initPointerFX(){
+    if(reduced || !fine) return;
+
+    var heroEl = document.querySelector(".hero");
+    if(scene3dEl && heroEl){
+      heroEl.addEventListener("pointermove", function(e){
+        var r = heroEl.getBoundingClientRect();
+        var x = (e.clientX - r.left)/r.width - .5, y = (e.clientY - r.top)/r.height - .5;
+        scene3dEl.style.setProperty("--rx", (x*13).toFixed(2)+"deg");
+        scene3dEl.style.setProperty("--ry", (-y*9).toFixed(2)+"deg");
+      });
+      heroEl.addEventListener("pointerleave", function(){
+        scene3dEl.style.setProperty("--rx","0deg"); scene3dEl.style.setProperty("--ry","0deg");
+      });
+    }
+
+    document.querySelectorAll(".btn-magnetic").forEach(function(btn){
+      var inner = btn.querySelector(".btn__mag") || btn, r;
+      btn.addEventListener("pointerenter", function(){ r = btn.getBoundingClientRect(); });
+      btn.addEventListener("pointermove", function(e){
+        if(!r) r = btn.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width/2);
+        var y = (e.clientY - r.top - r.height/2);
+        btn.style.transform = "translate("+(x*.15)+"px,"+(y*.22)+"px)";
+        inner.style.transform = "translate("+(x*.22)+"px,"+(y*.3)+"px)";
+      });
+      btn.addEventListener("pointerleave", function(){ btn.style.transform = ""; inner.style.transform = ""; });
+    });
+
+    document.querySelectorAll("[data-tilt]").forEach(function(card){
+      var r;
+      card.addEventListener("pointerenter", function(){ r = card.getBoundingClientRect(); });
+      card.addEventListener("pointermove", function(e){
+        if(!r) r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+        card.style.transform = "perspective(900px) rotateX("+((.5-py)*7).toFixed(2)+"deg) rotateY("+((px-.5)*7).toFixed(2)+"deg)";
+        card.style.setProperty("--mx", (px*100)+"%");
+        card.style.setProperty("--my", (py*100)+"%");
+      });
+      card.addEventListener("pointerleave", function(){ card.style.transform = ""; });
+    });
+  }
+
+  /* ---------- soft round sprite for the 3D points ---------- */
+  function makeSprite(THREE){
+    var c=document.createElement("canvas"); c.width=c.height=64;
+    var g=c.getContext("2d"), grd=g.createRadialGradient(32,32,0,32,32,32);
+    grd.addColorStop(0,"rgba(255,255,255,1)");
+    grd.addColorStop(.25,"rgba(255,255,255,.85)");
+    grd.addColorStop(1,"rgba(255,255,255,0)");
+    g.fillStyle=grd; g.beginPath(); g.arc(32,32,32,0,6.283); g.fill();
+    return new THREE.CanvasTexture(c);
+  }
+
+  /* ---------- Three.js full-page points field (the wow) ---------- */
+  function initThree(){
+    var THREE = window.THREE;
+    var renderer;
+    try{
+      renderer = new THREE.WebGLRenderer({alpha:true, antialias:false, powerPreference:"high-performance"});
+    }catch(e){ return false; }                       // no WebGL → caller falls back to 2D
+    var mobile = innerWidth < 740;
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1, mobile?1:1.5));
+    renderer.setSize(innerWidth, innerHeight, false);
+    var canvas = renderer.domElement; sceneEl.appendChild(canvas);
+
+    var scene  = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 1, 3000);
+    camera.position.z = 540;
+
+    var N = mobile ? 520 : 1500;
+    var pos = new Float32Array(N*3), col = new Float32Array(N*3);
+    var cO=new THREE.Color(0xFF5C2B), cV=new THREE.Color(0x7C5CFF), cW=new THREE.Color(0xCFC9E8);
+    var spreadX=1300, spreadY=950, depth=900;
+    for(var i=0;i<N;i++){
+      pos[i*3]   = (Math.random()-.5)*spreadX;
+      pos[i*3+1] = (Math.random()-.5)*spreadY;
+      pos[i*3+2] = (Math.random()-.5)*depth - 120;
+      var r=Math.random(), c = r<0.15?cO:(r<0.5?cV:cW);
+      col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos,3));
+    geo.setAttribute("color",    new THREE.BufferAttribute(col,3));
+    var mat = new THREE.PointsMaterial({
+      size: mobile?6:7, map:makeSprite(THREE), vertexColors:true,
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+      sizeAttenuation:true, opacity:.92
+    });
+    var group = new THREE.Group(); group.add(new THREE.Points(geo,mat)); scene.add(group);
+
+    var rx=0, ry=0, trx=0, tryy=0, sEase=0, raf=0, running=true;
+    if(fine) addEventListener("pointermove", function(e){
+      trx = (e.clientY/innerHeight - .5) * .5;
+      tryy = (e.clientX/innerWidth  - .5) * .6;
+    }, {passive:true});
+
+    function loop(){
+      if(!running) return;
+      rx += (trx-rx)*.04; ry += (tryy-ry)*.04;
+      sEase += (scrollNorm - sEase)*.06;
+      group.rotation.y += .0007;
+      group.rotation.x = rx;
+      group.rotation.z = ry*.15;
+      group.position.y = sEase * 240;                 // scroll parallax
+      camera.position.x += ((ry*60) - camera.position.x)*.04;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+
+    var rt;
+    addEventListener("resize", function(){ clearTimeout(rt); rt=setTimeout(function(){
+      camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight, false);
+    },200); }, {passive:true});
+
+    document.addEventListener("visibilitychange", function(){
+      if(document.hidden){ running=false; cancelAnimationFrame(raf); }
+      else if(!running){ running=true; loop(); }
+    });
+    return true;
+  }
+
+  /* ---------- 2D canvas fallback (full-page particle / wireframe field) ---------- */
+  function init2D(){
+    var canvas=document.createElement("canvas"); sceneEl.appendChild(canvas);
+    var ctx=canvas.getContext("2d"); if(!ctx) return false;
+    var DPR=Math.min(devicePixelRatio||1,1.5), w=0,h=0,parts=[],raf=0,running=true,mx=0,my=0,tx=0,ty=0;
+    function size(){
+      w=innerWidth; h=innerHeight; canvas.width=w*DPR; canvas.height=h*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+      var mobile=w<740, n=mobile?40:Math.min(90,Math.round(w*h/22000)); parts=[];
+      for(var i=0;i<n;i++){ var z=Math.random();
+        parts.push({x:Math.random()*w,y:Math.random()*h,z:z,r:.6+z*1.8,
+          vx:(Math.random()-.5)*(.1+z*.15),vy:(Math.random()-.5)*(.1+z*.15),px:0,py:0}); }
+    }
+    size();
+    var rt; addEventListener("resize", function(){ clearTimeout(rt); rt=setTimeout(size,200); }, {passive:true});
+    if(fine) addEventListener("pointermove", function(e){ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; }, {passive:true});
+    function frame(){
+      if(!running) return;
+      tx+=(mx-tx)*.05; ty+=(my-ty)*.05;
+      ctx.clearRect(0,0,w,h);
+      var i,j,a,b,dx,dy,d,max=130;
+      for(i=0;i<parts.length;i++){ a=parts[i]; a.x+=a.vx; a.y+=a.vy;
+        if(a.x<-20)a.x=w+20; if(a.x>w+20)a.x=-20; if(a.y<-20)a.y=h+20; if(a.y>h+20)a.y=-20;
+        a.px=a.x+tx*a.z*40; a.py=a.y+ty*a.z*40 - scrollNorm*40*a.z; }
+      for(i=0;i<parts.length;i++){ a=parts[i];
+        for(j=i+1;j<parts.length;j++){ b=parts[j]; dx=a.px-b.px; dy=a.py-b.py; d=Math.sqrt(dx*dx+dy*dy);
+          if(d<max){ var o=(1-d/max)*.14*Math.min(a.z+b.z,1);
+            ctx.strokeStyle="rgba(170,150,255,"+o+")"; ctx.lineWidth=.6;
+            ctx.beginPath(); ctx.moveTo(a.px,a.py); ctx.lineTo(b.px,b.py); ctx.stroke(); } } }
+      for(i=0;i<parts.length;i++){ a=parts[i]; ctx.beginPath(); ctx.arc(a.px,a.py,a.r,0,6.283);
+        ctx.fillStyle = a.z>.7 ? "rgba(255,122,80,"+(.3+a.z*.4)+")" : "rgba(205,200,235,"+(.16+a.z*.3)+")"; ctx.fill(); }
+      raf=requestAnimationFrame(frame);
+    }
+    frame();
+    document.addEventListener("visibilitychange", function(){
+      if(document.hidden){ running=false; cancelAnimationFrame(raf); }
+      else if(!running){ running=true; frame(); }
+    });
+    return true;
+  }
+
+  function initBackground(){
+    if(!sceneEl || reduced) return;                  // reduced-motion → static CSS aurora only
+    bgActive = true;
+    loadScript(THREE_URL).then(function(){
+      if(!window.THREE || !initThree()) init2D();
+    }).catch(function(){ init2D(); });
+  }
+
+  /* ---------- CDN libs (GSAP + ScrollTrigger + Lenis) ---------- */
+  function loadScript(src){
+    return new Promise(function(res,rej){
+      var s=document.createElement("script"); s.src=src; s.async=true;
+      s.onload=res; s.onerror=function(){ rej(new Error(src)); };
+      document.head.appendChild(s);
+    });
+  }
+  function smoothAnchors(lenis){
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener("click", function(e){
+        var id = a.getAttribute("href");
+        if(id.length<2) return;
+        var t = document.querySelector(id);
+        if(!t) return;
+        e.preventDefault();
+        if(lenis) lenis.scrollTo(t, {offset:-72});
+        else t.scrollIntoView({behavior: reduced?"auto":"smooth"});
+        history.pushState(null,"",id);
+      });
+    });
+  }
+  function initMotion(){
+    if(reduced){ smoothAnchors(null); return; }       // CSS already reveals everything
+
+    var failsafe = setTimeout(function(){ document.documentElement.classList.add("no-anim"); }, 2600);
+
+    loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js")
+      .then(function(){ return loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"); })
+      .then(function(){
+        clearTimeout(failsafe);
+        var gsap = window.gsap; gsap.registerPlugin(window.ScrollTrigger);
+
+        gsap.utils.toArray("[data-reveal]").forEach(function(el){
+          gsap.to(el,{opacity:1,y:0,duration:.7,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 86%"}});
+        });
+        gsap.utils.toArray("[data-reveal-group]").forEach(function(grp){
+          gsap.to(grp.querySelectorAll("[data-reveal-item]"),
+            {opacity:1,y:0,duration:.7,ease:"power3.out",stagger:.09,scrollTrigger:{trigger:grp,start:"top 82%"}});
+        });
+
+        loadScript("https://cdnjs.cloudflare.com/ajax/libs/lenis/1.0.42/lenis.min.js")
+          .then(function(){
+            var Lenis = window.Lenis;
+            if(!Lenis){ smoothAnchors(null); return; }
+            var lenis = new Lenis({lerp:.1, wheelMultiplier:1, smoothWheel:true});
+            function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+            lenis.on("scroll", window.ScrollTrigger.update);
+            smoothAnchors(lenis);
+          })
+          .catch(function(){ smoothAnchors(null); });
+      })
+      .catch(function(){
+        clearTimeout(failsafe);
+        document.documentElement.classList.add("no-anim");
+        smoothAnchors(null);
+      });
+  }
+
+  /* ---------- boot ---------- */
+  function boot(){ idle(initBackground); initPointerFX(); idle(initMotion); }
+  if(document.readyState === "complete") boot();
+  else addEventListener("load", boot);
+})();

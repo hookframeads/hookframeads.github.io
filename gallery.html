@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hookframe — Design directions</title>
+<meta name="description" content="Six design directions for the Hookframe AI video ads page. Pick one.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="hookframe-logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+:root{--bg:#0B0B0E;--surface:#15151A;--line:rgba(255,255,255,.1);--text:#F4F4F6;--dim:#9A9AA6;--accent:#FF5C2B;
+  --head:"Space Grotesk",sans-serif;--body:"Inter",sans-serif;--ease:cubic-bezier(.22,.61,.27,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin-inline:auto;padding:clamp(2.5rem,6vw,5rem) clamp(1.2rem,5vw,2.5rem)}
+.head{max-width:62ch;margin-bottom:clamp(2.5rem,5vw,3.5rem)}
+.eyebrow{font-family:var(--head);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+h1{font-family:var(--head);font-weight:700;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:1rem}
+.sub{color:var(--dim);font-size:clamp(1.05rem,1.8vw,1.2rem);max-width:54ch}
+.grid{display:grid;gap:clamp(1rem,2vw,1.5rem);grid-template-columns:1fr}
+@media(min-width:680px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.22);box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+.card:focus-within{border-color:var(--accent)}
+.swatch{height:120px;display:flex}
+.swatch span{flex:1}
+.body{padding:1.3rem 1.4rem 1.5rem}
+.num{font-family:var(--head);font-size:.72rem;letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
+.name{font-family:var(--head);font-weight:700;font-size:1.3rem;margin:.3rem 0 .5rem;letter-spacing:-.01em}
+.desc{color:var(--dim);font-size:.93rem;min-height:3.4em}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
+.tag{font-size:.7rem;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:.25rem .6rem}
+.go{margin-top:1.2rem;display:inline-flex;align-items:center;gap:.5ch;font-weight:600;font-size:.92rem;color:var(--accent)}
+.go::after{content:"→";transition:transform .25s var(--ease)}
+.card:hover .go::after{transform:translateX(4px)}
+.foot{margin-top:clamp(2.5rem,5vw,3.5rem);color:var(--dim);font-size:.85rem;border-top:1px solid var(--line);padding-top:1.5rem}
+.foot code{font-family:ui-monospace,monospace;color:var(--text);background:rgba(255,255,255,.05);padding:.1rem .4rem;border-radius:5px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="head">
+    <p class="eyebrow">Hookframe • Design directions</p>
+    <h1>Eleven ways to send the same page.</h1>
+    <p class="sub">Same copy, same conversion structure, eleven different looks. Open each, then keep the one that feels most like you. They all point to the same booking link, WhatsApp and email.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="index.html">
+      <div class="swatch"><span style="background:#0B0B0E"></span><span style="background:#FF5C2B"></span><span style="background:#7C5CFF"></span><span style="background:#1E1E25"></span></div>
+      <div class="body">
+        <span class="num">00 — Original</span>
+        <div class="name">Studio 3D</div>
+        <p class="desc">Dark near-black with a full-page Three.js particle field. Orange action color, violet glow. The bold creative-studio build.</p>
+        <div class="tags"><span class="tag">Dark</span><span class="tag">Space Grotesk</span><span class="tag">WebGL 3D</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v1-editorial.html">
+      <div class="swatch"><span style="background:#F4F0E8"></span><span style="background:#17140F"></span><span style="background:#E5402F"></span><span style="background:#ECE5D7"></span></div>
+      <div class="body">
+        <span class="num">01 — Variant</span>
+        <div class="name">Swiss Editorial</div>
+        <p class="desc">Light cream, ink and a single editorial red. Oversized Archivo, mono labels, a running marquee. Magazine energy.</p>
+        <div class="tags"><span class="tag">Light</span><span class="tag">Archivo + Mono</span><span class="tag">Marquee</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v2-neon.html">
+      <div class="swatch"><span style="background:#0A0917"></span><span style="background:#FF2E97"></span><span style="background:#2DE0E6"></span><span style="background:#7C5CFF"></span></div>
+      <div class="body">
+        <span class="num">02 — Variant</span>
+        <div class="name">Neon Nights</div>
+        <p class="desc">Deep indigo, magenta and cyan. Glassmorphism cards over a drifting gradient mesh. High-energy and electric.</p>
+        <div class="tags"><span class="tag">Dark</span><span class="tag">Sora</span><span class="tag">Glass + mesh</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v3-boutique.html">
+      <div class="swatch"><span style="background:#EFE7DA"></span><span style="background:#B9512E"></span><span style="background:#34503F"></span><span style="background:#F7F2E9"></span></div>
+      <div class="body">
+        <span class="num">03 — Variant</span>
+        <div class="name">Atelier Boutique</div>
+        <p class="desc">Warm sand with terracotta and forest green. Elegant Playfair serif, soft rounded cards, generous air. Premium and calm.</p>
+        <div class="tags"><span class="tag">Light</span><span class="tag">Playfair</span><span class="tag">Editorial serif</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v4-brutalist.html">
+      <div class="swatch"><span style="background:#F2F0E9"></span><span style="background:#0E0E0C"></span><span style="background:#BFF000"></span><span style="background:#FFFFFF"></span></div>
+      <div class="body">
+        <span class="num">04 — Variant</span>
+        <div class="name">Brutalist Grid</div>
+        <p class="desc">Paper white, hard black borders, electric lime. JetBrains Mono, offset shadows, a ticker. Raw and confident.</p>
+        <div class="tags"><span class="tag">Light</span><span class="tag">Mono</span><span class="tag">Brutalist</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v5-aurora.html">
+      <div class="swatch"><span style="background:#0E1117"></span><span style="background:#2DD4BF"></span><span style="background:#5B9DFF"></span><span style="background:#161D27"></span></div>
+      <div class="body">
+        <span class="num">05 — Variant</span>
+        <div class="name">Aurora Minimal</div>
+        <p class="desc">Dark slate, teal and blue, a soft flowing aurora behind the hero. Geometric Manrope, lots of whitespace. Quiet and modern.</p>
+        <div class="tags"><span class="tag">Dark</span><span class="tag">Manrope</span><span class="tag">Aurora canvas</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v6-clean.html">
+      <div class="swatch"><span style="background:#FFFFFF"></span><span style="background:#0E1014"></span><span style="background:#FF5C2B"></span><span style="background:#F6F7F9"></span></div>
+      <div class="body">
+        <span class="num">06 — Variant</span>
+        <div class="name">Clean White</div>
+        <p class="desc">Bright white, near-black text, the brand orange used sparingly. Space Grotesk, soft shadows, lots of air. The crisp SaaS look.</p>
+        <div class="tags"><span class="tag">White</span><span class="tag">Space Grotesk</span><span class="tag">Minimal SaaS</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v7-white3d.html">
+      <div class="swatch"><span style="background:#FFFFFF"></span><span style="background:#0E1014"></span><span style="background:#FF5C2B"></span><span style="background:linear-gradient(135deg,#FFE7DC,#E7EEFF)"></span></div>
+      <div class="body">
+        <span class="num">07 — Variant</span>
+        <div class="name">Clean White · 3D</div>
+        <p class="desc">The white build with a wow moment: a cluster of ad phones floating in real 3D, tilting to your cursor. Each shows a vertical ad with a play and a Shop CTA. The product, made literal.</p>
+        <div class="tags"><span class="tag">White</span><span class="tag">CSS 3D</span><span class="tag">Floating phones</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v8-holographic.html">
+      <div class="swatch"><span style="background:#08070F"></span><span style="background:linear-gradient(135deg,#FF5C2B,#FF2E97,#7C5CFF,#2DE0E6)"></span><span style="background:#FF5C2B"></span><span style="background:#15131F"></span></div>
+      <div class="body">
+        <span class="num">07 — Effects+</span>
+        <div class="name">Holographic</div>
+        <p class="desc">Dark, with a shifting holographic backdrop, a custom cursor, and a 3D carousel of ad-phones spinning in real perspective. Accent text runs through the whole spectrum.</p>
+        <div class="tags"><span class="tag">CSS 3D</span><span class="tag">Custom cursor</span><span class="tag">Holographic</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v9-particles.html">
+      <div class="swatch"><span style="background:#0A0A12"></span><span style="background:#FF5C2B"></span><span style="background:#7C5CFF"></span><span style="background:#3FE0DA"></span></div>
+      <div class="body">
+        <span class="num">08 — More 3D</span>
+        <div class="name">Particle Constellation</div>
+        <p class="desc">A full-page WebGL field of ~1,500 glowing particles with a rotating wireframe gadget at its core, reacting to cursor and scroll. Custom cursor, 3D tilt cards.</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">Particles</span><span class="tag">Wireframe</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+    <a class="card" href="v10-maximal.html">
+      <div class="swatch"><span style="background:#070710"></span><span style="background:#FF5C2B"></span><span style="background:#7C5CFF"></span><span style="background:#2DE0E6"></span></div>
+      <div class="body">
+        <span class="num">09 — Maximal 3D</span>
+        <div class="name">Maximal</div>
+        <p class="desc">The showpiece: a glossy faceted gadget rotating under orbiting orange, violet and cyan lights, wrapped in a particle swarm, with a scroll-driven camera dolly. Everything turned up.</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">Lit 3D object</span><span class="tag">Camera dolly</span></div>
+        <span class="go">View design</span>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="foot">All eleven live in <code>portfolio/</code>. Drop creatives into <code></code> using the names in the first card's comment and they slot into every version. Once you pick one, rename it to <code>index.html</code> to make it the default.</p>
+</main>
+</body>
+</html>
