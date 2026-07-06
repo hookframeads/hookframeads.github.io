@@ -12,17 +12,17 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="AI Ad Creative for Tech &amp; Gadget Brands">
 <meta property="og:description" content="UGC video, cinematic CGI and static ads. Made with AI, ready in days. Get one free.">
-<meta property="og:image" content="og-preview.jpg">
+<meta property="og:image" content="assets/og-preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Hookframe, AI ad creative for tech and gadget brands">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Ad Creative for Tech &amp; Gadget Brands">
 <meta name="twitter:description" content="UGC video, cinematic CGI and static ads. Made with AI, ready in days. Get one free.">
-<meta name="twitter:image" content="og-preview.jpg">
+<meta name="twitter:image" content="assets/og-preview.jpg">
 
 <!-- Hookframe logo favicon -->
-<link rel="icon" type="image/svg+xml" href="hookframe-logo.svg">
+<link rel="icon" type="image/svg+xml" href="assets/hookframe-logo.svg">
 
 <!-- Fonts: headings Space Grotesk, body Inter -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -396,6 +396,7 @@ img,video{display:block;max-width:100%;height:auto}
 .footer__fine{margin-top:2rem;display:flex;flex-direction:column;gap:.4rem}
 .footer__fine p{color:var(--dim);font-size:.84rem;max-width:70ch}
 .footer__fine .disc{opacity:.7}
+.footer__fine .legal{font-size:.72rem;opacity:.5;line-height:1.5;letter-spacing:.01em}
 
 /* ============================================================
    REVEAL (scroll-driven) — hidden only with JS+motion on,
@@ -410,6 +411,51 @@ img,video{display:block;max-width:100%;height:auto}
   .viz-chart polyline{stroke-dashoffset:0}.viz-chart circle{opacity:1}.viz-cam .strike{stroke-dashoffset:0}
   .stage{transform:none!important}.scene3d{transform:none!important}
 }
+
+/* ============================================================
+   INTRO — "scroll to enter": tunnel of frames over the aurora.
+   The homepage lives in #site right below; every guard failure
+   collapses #intro to zero cost.
+   ============================================================ */
+#intro{position:relative;height:300vh}
+.intro__fix{position:fixed;inset:0;z-index:150;pointer-events:none;overflow:hidden}
+.intro__fix canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .9s var(--ease-out);will-change:transform}
+.intro__fix.is-ready canvas{opacity:1}
+.intro__word{position:absolute;left:50%;top:24%;transform:translate(-50%,-50%);z-index:2;text-align:center;
+  font-family:var(--font-head);font-weight:700;letter-spacing:.42em;text-indent:.42em;
+  font-size:clamp(1.4rem,4.6vw,3rem);color:var(--text);
+  text-shadow:0 0 34px rgba(124,92,255,.55),0 2px 18px rgba(11,11,14,.85);
+  opacity:0;transition:opacity .9s var(--ease-out);
+  animation:introFloat 5.5s ease-in-out infinite}
+.intro__fix.is-ready .intro__word{opacity:1}
+.intro__word .mark{display:block;width:clamp(40px,6vw,58px);height:auto;margin:0 auto 1rem;filter:drop-shadow(0 0 18px rgba(255,92,43,.45))}
+@keyframes introFloat{0%,100%{transform:translate(-50%,-50%) translateY(-5px)}50%{transform:translate(-50%,-50%) translateY(6px)}}
+.intro__hint{position:absolute;left:50%;bottom:6vh;transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+  font-family:var(--font-head);font-weight:600;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);
+  opacity:0;transition:opacity .9s var(--ease-out) .35s}
+.intro__fix.is-ready .intro__hint{opacity:1}
+.intro__hint::after{content:"";width:1px;height:34px;background:linear-gradient(180deg,var(--accent),transparent);
+  animation:hintDrop 1.6s var(--ease-in-out) infinite}
+@keyframes hintDrop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.skip--intro,.skip--intro:focus{top:auto;left:auto;right:16px;bottom:16px;position:fixed;z-index:320;
+  font:600 .9rem/1 var(--font-body);border:0;cursor:pointer;pointer-events:auto}
+.intro__veil{position:fixed;inset:0;z-index:260;pointer-events:none;opacity:0;
+  background:radial-gradient(60% 60% at 50% 50%,rgba(124,92,255,.25),transparent 70%),var(--bg)}
+.no-js #intro,.no-js .intro__veil{display:none}
+@media(prefers-reduced-motion:reduce){#intro,.intro__veil{display:none!important}}
+
+/* ---- intro v2 (tunel de frames): scroll-filled wordmark + viewfinder ---- */
+.intro__word{text-shadow:none}
+.intro__word .wwrap{position:relative;display:inline-block}
+.intro__word .wbase{color:rgba(207,201,232,.30)}
+.intro__word .wfill{position:absolute;inset:0;background:linear-gradient(100deg,#FF5C2B 8%,#7C5CFF 92%);-webkit-background-clip:text;background-clip:text;color:transparent;clip-path:inset(-8% var(--wcut,100%) -8% 0)}
+.intro__vf{position:absolute;inset:calc(-14px - var(--vfo,28px)) calc(-24px - var(--vfo,28px));opacity:var(--vfa,0);pointer-events:none}
+.intro__vf i{position:absolute;width:22px;height:22px;border:0 solid #FF5C2B}
+.intro__vf i:nth-child(1){left:0;top:0;border-left-width:2px;border-top-width:2px}
+.intro__vf i:nth-child(2){right:0;top:0;border-right-width:2px;border-top-width:2px}
+.intro__vf i:nth-child(3){left:0;bottom:0;border-left-width:2px;border-bottom-width:2px}
+.intro__vf i:nth-child(4){right:0;bottom:0;border-right-width:2px;border-bottom-width:2px}
 </style>
 </head>
 
@@ -422,10 +468,22 @@ img,video{display:block;max-width:100%;height:auto}
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
+<!-- ============================ INTRO — scroll to enter ============================ -->
+<div id="intro">
+  <div class="intro__fix" id="introFix" aria-hidden="true">
+    <canvas id="introCanvas"></canvas>
+    <div class="intro__word"><img class="mark" src="assets/hookframe-mark.svg" alt=""><span class="wwrap"><span class="wbase">HOOKFRAME</span><span class="wfill" aria-hidden="true">HOOKFRAME</span></span><span class="intro__vf" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+    <div class="intro__hint">Scroll to enter</div>
+  </div>
+  <button class="skip skip--intro" id="introSkip" type="button">Skip intro</button>
+</div>
+<div class="intro__veil" id="introVeil" aria-hidden="true"></div>
+
+<div id="site">
 <!-- ============================ NAV ============================ -->
 <header class="nav">
   <div class="nav__in">
-    <a class="brand" href="#top" aria-label="Hookframe, home"><img class="brand__logo" src="hookframe-mark.svg" alt="" aria-hidden="true"><span class="brand__name">Hookframe</span><span class="dot">•</span></a>
+    <a class="brand" href="#top" aria-label="Hookframe, home"><img class="brand__logo" src="assets/hookframe-mark.svg" alt="" aria-hidden="true"><span class="brand__name">Hookframe</span><span class="dot">•</span></a>
     <nav class="nav__links" aria-label="Primary">
       <a class="nav__link nav__hideable" href="#work">Work</a>
       <a class="nav__link nav__hideable" href="#how">How it works</a>
@@ -452,13 +510,13 @@ img,video{display:block;max-width:100%;height:auto}
 
       <div class="stage" aria-hidden="true">
         <div class="scene3d" id="scene3d">
-          <div class="float f-cine f2"><div class="float__in"><div class="mini cine"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="cgi-drone.mp4" type="video/mp4"></video><span class="mini__tag">Cinematic</span></div></div></div></div>
-          <div class="float f-cgi f3"><div class="float__in"><div class="mini cgi"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="cgi-keyboard.mp4" type="video/mp4"></video><span class="mini__tag">CGI</span></div></div></div></div>
+          <div class="float f-cine f2"><div class="float__in"><div class="mini cine"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="assets/videos/cgi-drone.mp4" type="video/mp4"></video><span class="mini__tag">Cinematic</span></div></div></div></div>
+          <div class="float f-cgi f3"><div class="float__in"><div class="mini cgi"><div class="mini__screen"><video class="mock__video" autoplay muted loop playsinline preload="metadata"><source src="assets/videos/cgi-keyboard.mp4" type="video/mp4"></video><span class="mini__tag">CGI</span></div></div></div></div>
           <div class="float f-main"><div class="float__in">
             <div class="phone">
               <div class="phone__screen">
                 <video class="mock__video" autoplay muted loop playsinline preload="metadata">
-                  <source src="ugc-smartwatch.mp4" type="video/mp4">
+                  <source src="assets/videos/ugc-smartwatch.mp4" type="video/mp4">
                 </video>
                 <span class="notch"></span>
                 <span class="phone__tag">UGC</span>
@@ -511,14 +569,14 @@ img,video{display:block;max-width:100%;height:auto}
              (keep the surrounding .card__media wrapper + .card__glow). IntersectionObserver
              auto-plays it only while it is on screen:
 
-               <video class="card__video" controls poster="ugc-01-unboxing.jpg"
+               <video class="card__video" controls poster="assets/ugc-01-unboxing.jpg"
                       autoplay muted loop playsinline preload="metadata"
                       width="900" height="1600">
-                 <source src="ugc-01-unboxing.mp4" type="video/mp4">
+                 <source src="assets/ugc-01-unboxing.mp4" type="video/mp4">
                </video>
 
              IMAGE (block 03 static cards): replace the .ph with
-               <img src="static-07-powerbank.jpg" alt="Power bank static ad"
+               <img src="assets/static-07-powerbank.jpg" alt="Power bank static ad"
                     width="900" height="1125" loading="lazy" decoding="async">
 
              Naming map: ugc-01-unboxing · ugc-02-tutorial · ugc-03-review · ugc-04-problem-solution
@@ -527,8 +585,8 @@ img,video{display:block;max-width:100%;height:auto}
              ▲▲▲ ------------------------------------------------------ ▲▲▲ -->
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
-            <video class="card__video" poster="ugc-earbuds.jpg" controls autoplay muted loop playsinline preload="auto">
-              <source src="ugc-earbuds.mp4" type="video/mp4">
+            <video class="card__video" poster="assets/posters/ugc-earbuds.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="assets/videos/ugc-earbuds.mp4" type="video/mp4">
             </video>
             <span class="badge">UGC</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -538,8 +596,8 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
-            <video class="card__video" poster="ugc-led.jpg" controls autoplay muted loop playsinline preload="auto">
-              <source src="ugc-led.mp4" type="video/mp4">
+            <video class="card__video" poster="assets/posters/ugc-led.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="assets/videos/ugc-led.mp4" type="video/mp4">
             </video>
             <span class="badge">UGC</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -549,8 +607,8 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
-            <video class="card__video" poster="ugc-smartwatch.jpg" controls autoplay muted loop playsinline preload="auto">
-              <source src="ugc-smartwatch.mp4" type="video/mp4">
+            <video class="card__video" poster="assets/posters/ugc-smartwatch.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="assets/videos/ugc-smartwatch.mp4" type="video/mp4">
             </video>
             <span class="badge">UGC</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -560,8 +618,8 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
-            <video class="card__video" poster="ugc-velhinha.jpg" controls autoplay muted loop playsinline preload="auto">
-              <source src="ugc-velhinha.mp4" type="video/mp4">
+            <video class="card__video" poster="assets/posters/ugc-velhinha.jpg" controls autoplay muted loop playsinline preload="auto">
+              <source src="assets/videos/ugc-velhinha.mp4" type="video/mp4">
             </video>
             <span class="badge">UGC</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -586,7 +644,7 @@ img,video{display:block;max-width:100%;height:auto}
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
             <video class="card__video" controls autoplay muted loop playsinline preload="auto">
-              <source src="cgi-keyboard.mp4" type="video/mp4">
+              <source src="assets/videos/cgi-keyboard.mp4" type="video/mp4">
             </video>
             <span class="badge">CGI</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -597,7 +655,7 @@ img,video{display:block;max-width:100%;height:auto}
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
             <video class="card__video" controls autoplay muted loop playsinline preload="auto">
-              <source src="cgi-drone.mp4" type="video/mp4">
+              <source src="assets/videos/cgi-drone.mp4" type="video/mp4">
             </video>
             <span class="badge">CGI</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -608,7 +666,7 @@ img,video{display:block;max-width:100%;height:auto}
         <article class="card" data-reveal-item>
           <div class="card__media ratio-916" data-tilt>
             <video class="card__video" controls autoplay muted loop playsinline preload="auto">
-              <source src="cgi-powerbank.mp4" type="video/mp4">
+              <source src="assets/videos/cgi-powerbank.mp4" type="video/mp4">
             </video>
             <span class="badge">CGI</span>
             <div class="card__glow" aria-hidden="true"></div>
@@ -631,7 +689,7 @@ img,video{display:block;max-width:100%;height:auto}
       <div class="grid grid--3" data-reveal-group style="align-items:start">
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-fooh-powerbank.jpg" alt="VOLT power bank FOOH ad - a week on one charge" loading="lazy" decoding="async">
+            <img src="assets/statics/static-fooh-powerbank.jpg" alt="VOLT power bank FOOH ad - a week on one charge" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>FOOH ad</strong> / Power bank</p>
@@ -639,7 +697,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-lifestyle-camera.jpg" alt="PIXY instant camera UGC lifestyle ad" loading="lazy" decoding="async">
+            <img src="assets/statics/static-lifestyle-camera.jpg" alt="PIXY instant camera UGC lifestyle ad" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>UGC lifestyle</strong> / Instant camera</p>
@@ -647,7 +705,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-feature-keyboard.jpg" alt="HEX mechanical gaming keyboard ad - win before they react" loading="lazy" decoding="async">
+            <img src="assets/statics/static-feature-keyboard.jpg" alt="HEX mechanical gaming keyboard ad - win before they react" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>Feature highlight</strong> / Mechanical keyboard</p>
@@ -655,7 +713,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-cgi-smartwatch.jpg" alt="PULSE smartwatch CGI still ad" loading="lazy" decoding="async">
+            <img src="assets/statics/static-cgi-smartwatch.jpg" alt="PULSE smartwatch CGI still ad" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>CGI still</strong> / Smartwatch</p>
@@ -663,7 +721,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-3dtype-drone.jpg" alt="AERO drone 3D-typography ad - ABOVE" loading="lazy" decoding="async">
+            <img src="assets/statics/static-3dtype-drone.jpg" alt="AERO drone 3D-typography ad - ABOVE" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>3D type ad</strong> / Camera drone</p>
@@ -671,7 +729,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-social-scooter.jpg" alt="GLYDE electric scooter social-proof ad" loading="lazy" decoding="async">
+            <img src="assets/statics/static-social-scooter.jpg" alt="GLYDE electric scooter social-proof ad" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>Social proof ad</strong> / Electric scooter</p>
@@ -679,7 +737,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-concept-earbuds.jpg" alt="HUSH earbuds concept ad - silence the chaos" loading="lazy" decoding="async">
+            <img src="assets/statics/static-concept-earbuds.jpg" alt="HUSH earbuds concept ad - silence the chaos" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>Concept ad</strong> / Wireless earbuds</p>
@@ -687,7 +745,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-packshot-speaker.jpg" alt="Portable Bluetooth speaker studio packshot" loading="lazy" decoding="async">
+            <img src="assets/statics/static-packshot-speaker.jpg" alt="Portable Bluetooth speaker studio packshot" loading="lazy" decoding="async">
             <span class="badge">Packshot</span>
             <div class="card__glow" aria-hidden="true"></div>
           </div>
@@ -696,7 +754,7 @@ img,video{display:block;max-width:100%;height:auto}
 
         <article class="card" data-reveal-item>
           <div class="card__media ratio-45" data-tilt>
-            <img src="static-beforeafter-led.jpg" alt="LUMA LED strip before/after ad - upgrade your room" loading="lazy" decoding="async">
+            <img src="assets/statics/static-beforeafter-led.jpg" alt="LUMA LED strip before/after ad - upgrade your room" loading="lazy" decoding="async">
             <div class="card__glow" aria-hidden="true"></div>
           </div>
           <p class="card__label"><strong>Before / after</strong> / LED light strip</p>
@@ -775,12 +833,12 @@ img,video{display:block;max-width:100%;height:auto}
       <div class="offer" data-reveal>
         <div class="offer__reel" aria-hidden="true">
           <div class="offer__row">
-            <img src="thumb-fooh-powerbank.webp" alt=""><img src="thumb-lifestyle-camera.webp" alt=""><img src="thumb-feature-keyboard.webp" alt=""><img src="thumb-cgi-smartwatch.webp" alt=""><img src="thumb-3dtype-drone.webp" alt="">
-            <img src="thumb-fooh-powerbank.webp" alt=""><img src="thumb-lifestyle-camera.webp" alt=""><img src="thumb-feature-keyboard.webp" alt=""><img src="thumb-cgi-smartwatch.webp" alt=""><img src="thumb-3dtype-drone.webp" alt="">
+            <img src="assets/statics/thumb-fooh-powerbank.webp" alt=""><img src="assets/statics/thumb-lifestyle-camera.webp" alt=""><img src="assets/statics/thumb-feature-keyboard.webp" alt=""><img src="assets/statics/thumb-cgi-smartwatch.webp" alt=""><img src="assets/statics/thumb-3dtype-drone.webp" alt="">
+            <img src="assets/statics/thumb-fooh-powerbank.webp" alt=""><img src="assets/statics/thumb-lifestyle-camera.webp" alt=""><img src="assets/statics/thumb-feature-keyboard.webp" alt=""><img src="assets/statics/thumb-cgi-smartwatch.webp" alt=""><img src="assets/statics/thumb-3dtype-drone.webp" alt="">
           </div>
           <div class="offer__row offer__row--r">
-            <img src="thumb-social-scooter.webp" alt=""><img src="thumb-concept-earbuds.webp" alt=""><img src="thumb-packshot-speaker.webp" alt=""><img src="thumb-beforeafter-led.webp" alt="">
-            <img src="thumb-social-scooter.webp" alt=""><img src="thumb-concept-earbuds.webp" alt=""><img src="thumb-packshot-speaker.webp" alt=""><img src="thumb-beforeafter-led.webp" alt="">
+            <img src="assets/statics/thumb-social-scooter.webp" alt=""><img src="assets/statics/thumb-concept-earbuds.webp" alt=""><img src="assets/statics/thumb-packshot-speaker.webp" alt=""><img src="assets/statics/thumb-beforeafter-led.webp" alt="">
+            <img src="assets/statics/thumb-social-scooter.webp" alt=""><img src="assets/statics/thumb-concept-earbuds.webp" alt=""><img src="assets/statics/thumb-packshot-speaker.webp" alt=""><img src="assets/statics/thumb-beforeafter-led.webp" alt="">
           </div>
         </div>
         <h2 id="offer-title">Want to see it on your product?</h2>
@@ -809,9 +867,11 @@ img,video{display:block;max-width:100%;height:auto}
   </div>
   <div class="wrap footer__fine">
     <p>© 2026 — Made with AI. Built for performance.</p>
-    <p class="disc">*Up to 10× — Emplifi Q3 2025 (UGC vs non-UGC posts). Industry figures (Stackla, Nielsen), not guaranteed results.</p><p class="disc" style="font-size:.72rem;opacity:.55;line-height:1.5;margin-top:.45rem">All brand names, logos, products, testimonials and statistics shown are fictional and created by Hookframe for demonstration purposes only. Not affiliated with or endorsed by any real company.</p>
+    <p class="disc">*Up to 10× — Emplifi Q3 2025 (UGC vs non-UGC posts). Industry figures (Stackla, Nielsen), not guaranteed results.</p>
+    <p class="legal">All brand names, logos, products, testimonials and statistics shown are fictional and created by Hookframe for demonstration purposes only. Hookframe is not affiliated with, endorsed by, or representative of any real company.</p>
   </div>
 </footer>
+</div><!-- /#site -->
 
 <!-- ============================================================
      SCRIPTS — everything heavy is deferred to after load + idle.
@@ -824,6 +884,7 @@ img,video{display:block;max-width:100%;height:auto}
   var fine    = window.matchMedia("(pointer: fine)").matches;
   var idle    = window.requestIdleCallback || function(cb){return setTimeout(function(){cb()},200)};
   var THREE_URL = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+  var lenisRef  = null;   // set once Lenis boots (the intro needs it for the reveal seam)
 
   var sceneEl = document.getElementById("scene");
   var stageEl = document.querySelector(".stage");
@@ -1073,9 +1134,9 @@ img,video{display:block;max-width:100%;height:auto}
   }
 
   function initBackground(){
-    if(!sceneEl || reduced) return;                  // reduced-motion → static CSS aurora only
+    if(!sceneEl || reduced || bgActive) return;      // reduced-motion → static CSS aurora only; idempotent
     bgActive = true;
-    loadScript(THREE_URL).then(function(){
+    (window.THREE ? Promise.resolve() : loadScript(THREE_URL)).then(function(){
       if(!window.THREE || !initThree()) init2D();
     }).catch(function(){ init2D(); });
   }
@@ -1091,6 +1152,7 @@ img,video{display:block;max-width:100%;height:auto}
   function smoothAnchors(lenis){
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
       a.addEventListener("click", function(e){
+        if(window.__hfIntroFinish) window.__hfIntroFinish();   // collapse the intro first so offsets are final
         var id = a.getAttribute("href");
         if(id.length<2) return;
         var t = document.querySelector(id);
@@ -1126,6 +1188,7 @@ img,video{display:block;max-width:100%;height:auto}
             var Lenis = window.Lenis;
             if(!Lenis){ smoothAnchors(null); return; }
             var lenis = new Lenis({lerp:.1, wheelMultiplier:1, smoothWheel:true});
+            lenisRef = lenis;
             function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
             requestAnimationFrame(raf);
             lenis.on("scroll", window.ScrollTrigger.update);
@@ -1140,8 +1203,243 @@ img,video{display:block;max-width:100%;height:auto}
       });
   }
 
+  /* ============================================================
+     INTRO — "scroll to enter": tunnel of frames. Real ad artwork
+     in thin glowing frames (orange/violet alternating) lining a
+     foggy corridor; the scroll rides the camera into it, the
+     wordmark fills with the brand gradient, a viewfinder closes
+     around it, and the last frame grows into the reveal. Guards
+     collapse it to zero cost; the ambient points background
+     starts only after the intro (one renderer at a time).
+     ============================================================ */
+  var intro = (function(){
+    var el   = document.getElementById("intro");
+    var fix  = document.getElementById("introFix");
+    var veil = document.getElementById("introVeil");
+    var skipB= document.getElementById("introSkip");
+    var cnv  = document.getElementById("introCanvas");
+    if(!el || !fix || !cnv) return {running:false, isDone:function(){return true;}};
+    var word = fix.querySelector(".intro__word");
+    var hint = fix.querySelector(".intro__hint");
+
+    var seen=false; try{ seen = sessionStorage.getItem("introSeen")==="1"; }catch(e){}
+    var weak = (navigator.hardwareConcurrency||8)<=2 || (navigator.deviceMemory||8)<=2;
+    var glOK=false; try{ var tc=document.createElement("canvas");
+      glOK = !!(window.WebGLRenderingContext && (tc.getContext("webgl")||tc.getContext("experimental-webgl"))); }catch(e){}
+
+    if(reduced || seen || weak || !glOK){
+      el.style.display="none"; el.setAttribute("aria-hidden","true");
+      if(veil) veil.remove(); if(skipB) skipB.remove();
+      return {running:false, isDone:function(){return true;}};
+    }
+
+    var mobile = innerWidth<700 || matchMedia("(pointer: coarse)").matches;
+    var done=false, ready=false, raf=0, lastT=0, frames=0, slowF=0, rzT=0;
+    var vh=innerHeight, trackH=el.offsetHeight;
+    var renderer=null, scene=null, camera=null, tunnel=null;
+    var cards=[], disposables=[], lastMesh=null, zLast=0;
+    /* big, close, readable: the artwork is the show */
+    var CW=240, CH=427, GAP=230, maxAniso=4;
+    var mx=0, my=0, txE=0, tyE=0;
+
+    var POST=["assets/posters/ugc-earbuds.jpg","assets/posters/ugc-led.jpg","assets/posters/ugc-velhinha.jpg","assets/posters/ugc-smartwatch.jpg"];
+    var STAT=["assets/statics/static-cgi-smartwatch.jpg","assets/statics/static-3dtype-drone.jpg","assets/statics/static-fooh-powerbank.jpg","assets/statics/static-concept-earbuds.jpg","assets/statics/static-feature-keyboard.jpg","assets/statics/static-lifestyle-camera.jpg","assets/statics/static-social-scooter.jpg","assets/statics/static-packshot-speaker.jpg","assets/statics/static-beforeafter-led.jpg"];
+    /* the LAST frame is the smartwatch UGC poster: the same creative the
+       hero phone plays, so the grow-to-fullscreen reads as a match-cut */
+    var ORDER  =[POST[0],STAT[0],STAT[1],POST[1],STAT[2],STAT[3],POST[2],STAT[4],STAT[5],STAT[6],STAT[7],STAT[8],POST[3]];
+    var ORDER_M=[POST[0],STAT[0],POST[1],STAT[1],POST[2],STAT[2],STAT[3],POST[3]];
+
+    function c01(v){ return v<0?0:v>1?1:v; }
+    function sm(a,b,v){ v=c01((v-a)/(b-a)); return v*v*(3-2*v); }
+    function lp(a,b,t){ return a+(b-a)*t; }
+
+    /* Canvas per frame, drawn in a virtual 9:16 box (576x1024) and stored
+       on a POT canvas: the GPU squeeze cancels out exactly on the 9:16
+       plane, so the artwork shows true to source, no stretching. High-res
+       on desktop (1024x2048 captures the full 1080p posters); mipmaps +
+       anisotropy keep it sharp at every distance and angle. */
+    function frameTexture(THREE,src,color){
+      var W=mobile?512:1024, H=W*2, VW=576, VH=1024;
+      var m=34, r=28, c=document.createElement("canvas"); c.width=W; c.height=H;
+      var g=c.getContext("2d");
+      var tex=new THREE.CanvasTexture(c);
+      tex.anisotropy=maxAniso;
+      function rr(x,y,w,h,rad){ g.beginPath(); g.moveTo(x+rad,y); g.arcTo(x+w,y,x+w,y+h,rad); g.arcTo(x+w,y+h,x,y+h,rad); g.arcTo(x,y+h,x,y,rad); g.arcTo(x,y,x+w,y,rad); g.closePath(); }
+      function draw(img){
+        g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,W,H);
+        g.setTransform(W/VW,0,0,H/VH,0,0);
+        g.save(); rr(m,m,VW-2*m,VH-2*m,r); g.clip();
+        g.imageSmoothingEnabled=true; try{ g.imageSmoothingQuality="high"; }catch(e){}
+        if(img){ var s=Math.max((VW-2*m)/img.width,(VH-2*m)/img.height); g.drawImage(img,(VW-img.width*s)/2,(VH-img.height*s)/2,img.width*s,img.height*s); }
+        else{
+          var pg2=g.createLinearGradient(0,0,0,VH);
+          pg2.addColorStop(0,"#2A2A36"); pg2.addColorStop(1,"#1A1A22");
+          g.fillStyle=pg2; g.fillRect(0,0,VW,VH);
+        }
+        var vg=g.createLinearGradient(0,VH-150,0,VH); vg.addColorStop(0,"rgba(11,11,14,0)"); vg.addColorStop(1,"rgba(11,11,14,.5)");
+        g.fillStyle=vg; g.fillRect(0,VH-150,VW,150);
+        g.restore();
+        g.save(); g.shadowColor=color; g.shadowBlur=24; g.strokeStyle=color; g.lineWidth=7;
+        rr(m,m,VW-2*m,VH-2*m,r); g.stroke(); g.restore();
+        tex.needsUpdate=true;
+      }
+      draw(null);
+      var img=new Image();
+      img.onload=function(){ draw(img); };
+      img.onerror=function(){ console.warn("intro: artwork failed to load:", src); };
+      img.src=src;
+      return tex;
+    }
+
+    function build(THREE){
+      renderer=new THREE.WebGLRenderer({canvas:cnv, alpha:true, antialias:true, powerPreference:"high-performance"});
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1, 1.5));
+      renderer.setSize(innerWidth, innerHeight, false);
+      maxAniso=Math.min(8, renderer.capabilities.getMaxAnisotropy()||4);
+      scene=new THREE.Scene();
+      scene.fog=new THREE.Fog(0x0B0B0E, 650, 3000);            // gentle depth, artwork stays readable
+      camera=new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 1, 4600);
+      camera.position.set(0,0,340);
+
+      tunnel=new THREE.Group(); scene.add(tunnel);
+      var list=mobile?ORDER_M:ORDER, n=list.length;
+      var geo=new THREE.PlaneGeometry(CW,CH); disposables.push(geo);
+      list.forEach(function(src,i){
+        var tex=frameTexture(THREE,src, i%2 ? "#7C5CFF" : "#FF5C2B"); disposables.push(tex);
+        var mat=new THREE.MeshBasicMaterial({map:tex,transparent:true});
+        var m2=new THREE.Mesh(geo,mat);
+        var last=(i===n-1);
+        /* tight corridor: frames hug the camera path so every ad is seen */
+        m2.position.set(last?0:(i%2?1:-1)*(124+((i*53)%56)), last?0:(((i*37)%50)-25), -i*GAP);
+        if(!last){ m2.rotation.y=(i%2?-1:1)*.22; m2.rotation.z=(((i*29)%9)-4)*.012; }
+        tunnel.add(m2); cards.push(m2);
+        if(last){ lastMesh=m2; zLast=-i*GAP; }
+      });
+
+      /* faint lilac dust drifting in the corridor, for depth */
+      var NP=mobile?120:220, pp=new Float32Array(NP*3);
+      for(var i2=0;i2<NP;i2++){ pp[i2*3]=(Math.random()-.5)*900; pp[i2*3+1]=(Math.random()-.5)*560; pp[i2*3+2]=-Math.random()*GAP*(n+1); }
+      var pg=new THREE.BufferGeometry(); pg.setAttribute("position",new THREE.BufferAttribute(pp,3));
+      var spr=makeSprite(THREE);
+      var pm=new THREE.PointsMaterial({size:8, map:spr, color:0xCFC9E8, transparent:true, opacity:.45,
+        depthWrite:false, blending:THREE.AdditiveBlending, sizeAttenuation:true});
+      scene.add(new THREE.Points(pg,pm)); disposables.push(pg,pm,spr);
+
+      lastT=performance.now();
+      raf=requestAnimationFrame(loop);
+    }
+
+    function loop(now){
+      if(done) return;
+      raf=requestAnimationFrame(loop);
+      var dt=now-lastT; lastT=now;
+      if(dt>0 && dt<500){                       // fps watchdog: bail before it ever feels broken
+        frames++; if(dt>38) slowF++; else if(slowF>0) slowF--;
+        if(frames>60 && slowF>34){ finish(false,false); return; }
+      }
+      var y=window.scrollY||document.documentElement.scrollTop||0;
+      var p=c01((trackH-vh)>0 ? y/(trackH-vh) : 1);
+
+      /* the ride: camera into the tunnel, subtle mouse parallax and a
+         gentle idle drift, both relaxing as the last frame takes over */
+      txE+=(mx-txE)*.06; tyE+=(my-tyE)*.06;
+      var relax=1-sm(.85,1,p);
+      var idleB=(1-sm(.70,.90,p))*Math.sin(now*.0006)*8;
+      camera.position.z=lp(340, zLast+310, sm(.02,.85,p))+idleB;
+      camera.position.x=txE*46*relax;
+      camera.position.y=-tyE*30*relax;
+      camera.lookAt(txE*18*relax, -tyE*12*relax, camera.position.z-600);
+
+      if(lastMesh){ var gsc=1+.9*sm(.85,.98,p); lastMesh.scale.set(gsc,gsc,1); }
+
+      /* wordmark: gradient fill completes with scroll; viewfinder closes at the end */
+      word.style.setProperty("--wcut",(100-100*sm(.05,.80,p)).toFixed(2)+"%");
+      word.style.setProperty("--vfo",(28*(1-sm(.70,.95,p))).toFixed(1)+"px");
+      word.style.setProperty("--vfa",sm(.68,.82,p).toFixed(3));
+      if(p>.5)  word.style.opacity=(1-sm(.86,.96,p)).toFixed(3);
+      if(p>.02) hint.style.opacity=(1-sm(.04,.12,p)).toFixed(3);
+      veil.style.opacity=sm(.90,.995,p).toFixed(3);
+
+      renderer.render(scene,camera);
+      if(!ready){ ready=true; fix.classList.add("is-ready"); }
+      if(p>=.995) finish(false,false);
+    }
+
+    function finish(waitVeil,focusNav){
+      if(done) return; done=true;
+      try{ sessionStorage.setItem("introSeen","1"); }catch(e){}
+      veil.style.transition="opacity .18s linear"; veil.style.opacity="1";
+      function settle(){
+        cancelAnimationFrame(raf);
+        var y=window.scrollY||document.documentElement.scrollTop||0;
+        var hpx=el.offsetHeight;
+        el.style.display="none"; el.setAttribute("aria-hidden","true");
+        var ny=Math.max(0, y-hpx);              // natural end lands at 0; deep-links keep their offset
+        if(lenisRef && lenisRef.scrollTo){ try{ lenisRef.scrollTo(ny,{immediate:true,force:true}); }catch(e){ window.scrollTo(0,ny); } }
+        else window.scrollTo(0,ny);
+        if(window.ScrollTrigger){ try{ window.ScrollTrigger.refresh(); }catch(e){} }
+        try{
+          if(scene) scene.traverse(function(o){
+            if(o.geometry) o.geometry.dispose();
+            if(o.material){ [].concat(o.material).forEach(function(mm){ if(mm.map&&mm.map.dispose) mm.map.dispose(); mm.dispose(); }); }
+          });
+          disposables.forEach(function(d){ if(d&&d.dispose) d.dispose(); });
+          if(renderer) renderer.dispose();
+        }catch(e){}
+        renderer=null; scene=null;
+        if(skipB){ skipB.remove(); skipB=null; }
+        removeEventListener("keydown",onKey);
+        window.__hfIntroFinish=null;
+        idle(initBackground);                   // ambient points start now
+        onScroll();                             // recalibrate the progress bar
+        if(focusNav){ var b=document.querySelector(".brand"); if(b&&b.focus){ try{ b.focus({preventScroll:true}); }catch(e){} } }
+        setTimeout(function(){
+          if(!veil) return;
+          veil.style.transition="opacity .5s ease"; veil.style.opacity="0";
+          setTimeout(function(){ if(veil){ veil.remove(); veil=null; } },560);
+        },60);
+      }
+      if(waitVeil) setTimeout(settle,190); else settle();
+    }
+
+    function onKey(e){
+      if(done) return;
+      if(e.key==="Escape" || (e.key==="Enter" && document.activeElement!==skipB)) finish(true,true);
+    }
+    addEventListener("keydown",onKey);
+    skipB.addEventListener("click",function(){ finish(true,true); });
+    window.__hfIntroFinish=function(){ finish(false,false); };
+    if(fine) addEventListener("pointermove",function(e){ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; },{passive:true});
+
+    document.addEventListener("visibilitychange",function(){
+      if(done) return;
+      if(document.hidden) cancelAnimationFrame(raf);
+      else{ lastT=performance.now(); raf=requestAnimationFrame(loop); }
+    });
+    addEventListener("resize",function(){
+      if(done) return; clearTimeout(rzT);
+      rzT=setTimeout(function(){ vh=innerHeight; trackH=el.offsetHeight;
+        if(renderer){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight,false); } },150);
+    },{passive:true});
+
+    /* failsafe: if the tunnel never renders (CDN down, GL context lost), reveal the site */
+    var failT=setTimeout(function(){ if(!ready && !done) finish(false,false); },6000);
+    var readyPoll=setInterval(function(){ if(ready||done){ clearTimeout(failT); clearInterval(readyPoll); } },250);
+    (window.THREE ? Promise.resolve() : loadScript(THREE_URL))
+      .then(function(){ if(done) return; try{ build(window.THREE); }catch(e){ console.error("intro: build failed, revealing site.", e); finish(false,false); } })
+      .catch(function(e){ console.error("intro: Three.js unavailable, revealing site.", e); finish(false,false); });
+
+    return { running:true, isDone:function(){ return done; } };
+  })();
+
   /* ---------- boot ---------- */
-  function boot(){ idle(initBackground); initPointerFX(); idle(initMotion); }
+  function boot(){
+    if(!intro.running || intro.isDone()) idle(initBackground);   // otherwise the intro starts it on finish
+    initPointerFX(); idle(initMotion);
+  }
   if(document.readyState === "complete") boot();
   else addEventListener("load", boot);
 })();
+</script>
+</body>
+</html>
